@@ -48,15 +48,15 @@
                   </el-form>
                 </div>
 
-                <el-button type="primary" @click="saveSchoolData">保存</el-button>
+                <el-button type="primary" @click="saveSchoolData()">保存</el-button>
+                <el-button type="primary" @click="testEmpty">test-输入非空</el-button>
                 <el-main>
-                  <!--debug用-->
-                  <!--<el-button @click="getCheckedNodes(leafOnly=true)">输出所有选中的结点</el-button>-->
+                  <el-button @click="getCheckedNodes">输出所有选中的结点</el-button><!---->
                   <el-button @click="getCheckedKeys">输出所有选中的Key</el-button>
-                  <el-button @click="packageOne">套餐一</el-button><!--通过 node 设置-->
-                  <el-button @click="packageTwo">套餐二</el-button><!--通过 key 设置-->
+                  <el-button @click="setCheckedNodes">套餐一</el-button><!--通过 node 设置-->
+                  <el-button @click="setCheckedKeys">套餐二</el-button><!--通过 key 设置-->
                   <el-button @click="resetChecked">清空所选项</el-button>
-                 <!-- <el-button @click="showList">输出List1&2</el-button>-->
+                  <el-button @click="showList">输出List1&2</el-button>
                 </el-main>
                 <el-main>
 
@@ -490,7 +490,7 @@ export default {
       //设置别名
       defaultProps: {
         children: 'children',
-        label: 'label',
+        label: 'label'
       },
       props: {
         value: 'id',
@@ -498,7 +498,6 @@ export default {
         children: 'children',
         multiple: true,
         checkStrictly:true,
-
       },
       dialogFormVisible: false,
       newChild: {
@@ -520,7 +519,7 @@ export default {
         if (data.length >= data_1[i] && data[data_1[i] - 1].id === data_1[i]) {
           const node = data[data_1[i] - 1]
           if(node.childrenID.length>0)
-            nodes.push({id: node.id,label: node.describeDataForm,relevanceID:node.relevanceID,children: this.DFSNode(node.childrenID, data, stack, node.childrenID.length)})
+            nodes.push({id: node.id,label: node.describeDataForm,children: this.DFSNode(node.childrenID, data, stack, node.childrenID.length)})
           else
             nodes.push({id: node.id,label: node.describeDataForm})
         }
@@ -535,12 +534,10 @@ export default {
         this.data = this.DFSNode(data_1, response.data, stack, data_1.length)
       })
     },
-    /*DFStoArray1(){
+    DFStoArray(){
       const dataArray=[]
       const childrenStack=[]
-      const chosenList = this.$refs.tree.getCheckedNodes()
-      console.log(chosenList)
-      console.log(chosenList[0].children)
+      const chosenList = this.$refs.tree.getCheckedNodes
       for(let i=0;i<chosenList.length;++i){
         const data=chosenList[i]
         childrenStack.unshift(data)
@@ -559,33 +556,14 @@ export default {
       }
       console.log(dataArray)
       return dataArray
-    },*/
-    DFStoArray(){
-      const chosenList = this.$refs.tree.getCheckedNodes()
-      const dataArray=[]
-      for(let i=0;i<chosenList.length;++i){
-        const data=chosenList[i]
-        const newChild = { id: data.id, describeDataForm: data.label, childrenID:[] ,showType:"",relevanceID:[]}
-        if (data.children) {
-          for(let j=0;j<data.children.length;++j){
-            newChild.childrenID.push(data.children[j].id)
-          }
-        }
-       /* if(data.relevanceID){
-          for(let ii=0;ii<data.relevanceID.length;++ii){
-            console.log('shiyishi')
-            console.log(chosenList[data.relevanceID[ii]])
-            data.relevanceID[ii]=chosenList[data.relevanceID[ii]].id
-          }
-        }
-        else*/
-        data.relevanceID=[]
-        newChild.relevanceID=data.relevanceID
-        dataArray.push(newChild)
-      }
-      return dataArray
+    },
+    toDataArray(){
+      const dataArrays=this.DFStoArray()
+      console.log("这是dataArrays")
+      console.log(dataArrays)
     },
     saveSchoolData () {
+      const dataArrays=this.DFStoArray()
       axios({
         method: 'post',
         url: 'http://localhost:8080/schoolStandardDataForm/createSchoolDataForm',
@@ -601,11 +579,20 @@ export default {
         }
       })*/
     },
+    showList(){
+      this.saveSchoolData()
+    },
+    append1 (data) {
+      this.dialogFormVisible = true
+      if (!data.children) {
+        this.$set(data, 'children', [])
+      }
+      data.children.push(this.getData())
+    },
 
     append (data) {
-      if(this.testEmpty()){
-        return
-      }
+      console.log(data)
+      console.log()
       if (!data.children) {
         this.$set(data, 'children', [])
       }
@@ -614,7 +601,13 @@ export default {
     },
 
     getData(){
-      return  {id: id++, label: this.newChild.label, dataOptions: this.newChild.options.split('；'), children: [], relevanceID: this.newChild.relevanceID}
+      //判断输入是否为空
+      if(this.newChild.label == null || this.newChild.options == null){
+        this.$alert("输入不可以为空！")
+      }
+      else{
+        return  {id: id++, label: this.newChild.label, dataOptions: this.newChild.options.split('；'), children: [], relevanceID: this.newChild.relevanceID}
+      }
     },
 
     remove (node, data) {
@@ -634,11 +627,11 @@ export default {
 
     getCheckedNodes(leafOnly=true) {
       console.log("chosenList is:");
-      console.log(this.$refs.tree.getCheckedNodes(leafOnly=true));
+      console.log(this.$refs.tree.getCheckedNodes());
 
     },
     getCheckedKeys() {
-      //bug：如果其孩子节点都被选择，则父亲节点也会被认为选择
+
       console.log(this.$refs.tree.getCheckedKeys());
     },
     setCheckedNodes() {
@@ -650,16 +643,9 @@ export default {
         /*label: '三级 1-1-1'*/
       }]);
     },
-
-    packageOne() {
-      this.$refs.tree.setCheckedKeys([4,7,22,25,26,13,14,16]);
+    setCheckedKeys() {
+      this.$refs.tree.setCheckedKeys([3,7,14,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49]);
     },
-
-    packageTwo() {
-      this.$refs.tree.setCheckedKeys([8,18,19,14,15,16]);
-    },
-
-
     resetChecked() {
       this.$refs.tree.setCheckedKeys([]);
     },
@@ -667,23 +653,23 @@ export default {
       console.log(value);
       this.newChild.relevanceID = value
     },
+    saveList(){
+      console.log(this.$refs.tree.getCheckedKeys());
+    },
 
-    testEmpty() {
+    testEmpty(){
       //判断输入是否为空
-      if (!this.newChild.options && !this.newChild.label) {
+      if(!this.newChild.options && !this.newChild.label){
         this.$alert("指标描述和选项均不可为空！")
         //两个都为空时
-        return true//打断判断和添加
+        return //打断判断
       }
-      if (!this.newChild.label) {
+      if(!this.newChild.label){
         this.$alert("指标描述不可为空！")
-        return true//打断添加
       }
-      if (!this.newChild.options) {
+      if(!this.newChild.options){
         this.$alert("指标选项不可为空！")
-        return true//打断添加
       }
-      return false
     },
 
     renderContent(h, { node, data, store }) {
@@ -691,7 +677,8 @@ export default {
         <span class="custom-tree-node">
         <span>{node.label}</span>
         <span>
-      <el-button size="mini" type="text" on-click={ () => this.append(data) }>添加</el-button>
+        <el-button size="mini" type="text" on-click={ () => this.append1(data) }>实验</el-button>
+      <el-button size="mini" type="text" on-click={ () => this.append(data,this.getData()) }>添加</el-button>
       <el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>
       <el-button size="mini" type="text" on-click={ () => this.recover(data) }>恢复</el-button>
       </span>

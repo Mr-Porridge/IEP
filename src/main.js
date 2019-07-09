@@ -13,6 +13,8 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
+require('./mock')
+
 Vue.prototype.axios=axios;
 Vue.use(VueAxios, axios);
 
