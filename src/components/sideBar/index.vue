@@ -47,7 +47,10 @@
     </el-col>&ndash;&gt;&ndash;&gt;-->
     <el-col class="tac">
       <!--<h5>自定义颜色</h5>-->
+      <!--default-active="1-4-1"-->
       <el-menu
+        router
+        :default-active="$route.path"
         default-active="1-4-1"
         :default-openeds=this.open_list
         class="el-menu-vertical-demo"
@@ -63,9 +66,9 @@
           </template>
           <el-menu-item-group>
             <!--<template slot="title">基础资料</template>-->
-            <el-menu-item index="1-1" style="height: 50px">生态评量</el-menu-item>
-            <el-menu-item index="1-2">功能评量</el-menu-item>
-            <el-menu-item index="1-3">体检记录</el-menu-item>
+            <el-menu-item index="/data">评估指标制定</el-menu-item>
+            <!--<el-menu-item index="1-2">功能评量</el-menu-item>
+            <el-menu-item index="1-3">体检记录</el-menu-item>-->
           </el-menu-item-group>
 <!--          <el-menu-item-group title="目标拟定">
             <el-menu-item index="2-1">长短期目标</el-menu-item>
@@ -73,8 +76,8 @@
           </el-menu-item-group>-->
           <el-submenu index="1-4">
             <template slot="title">课程评量</template>
-            <el-menu-item index="1-4-1">教学实施</el-menu-item>
-            <el-menu-item index="1-4-2">教学计划</el-menu-item>
+              <el-menu-item index="/show_school_tables">学生课表查询</el-menu-item>
+              <el-menu-item index="/creat_school_tables">学生课表制定</el-menu-item>
           </el-submenu>
         </el-submenu>
         <el-submenu index="2">
@@ -84,7 +87,7 @@
           </template>
           <el-menu-item-group>
             <!--<template slot="title">基础资料</template>-->
-            <el-menu-item index="2-1">长短期目标</el-menu-item>
+            <el-menu-item index="2-1" route="/data">长短期目标</el-menu-item>
             <el-menu-item index="2-2">班级目标</el-menu-item>
             <el-menu-item index="2-3">iep会议</el-menu-item>
           </el-menu-item-group>
@@ -110,7 +113,7 @@
   export default {
     data() {
       return {
-        open_list:['1','2','3'],
+        open_list:['1','2','3','1-4'],
         }
       },
     methods: {
