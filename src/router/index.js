@@ -2,7 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import basicDataRouter from './basic_data'
 import showListRouter from './show_school_list'
-import goalsFormulatingRouter from './school_tables'
+import schoolTablesRouter from './school_tables'
+import showSchoolTablesRouter from './school_tables/showSchoolTables'
+import creatSchoolTablesRouter from './school_tables/creatSchoolTables'
+
 
 Vue.use(Router)
 
@@ -13,6 +16,8 @@ export default new Router({
   routes: [
     basicDataRouter,
     showListRouter,
-    goalsFormulatingRouter,
+    schoolTablesRouter,
+    showSchoolTablesRouter,
+    creatSchoolTablesRouter,
   ]
 })

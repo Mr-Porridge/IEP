@@ -1,6 +1,7 @@
 // 将所有的mock文件引入
 require('@/mock/schooltablesmock')
-
+require('@/mock/coursesmock')
+require('@/mock/creatschooltablesmock')
 
 
 
