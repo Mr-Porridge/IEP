@@ -39,18 +39,32 @@
                     placeholder="输入学号搜索"></el-input>
                 </template>
                 <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    type="success"
-                    @click="handleEdit(scope.$index, scope.row)">新建</el-button>
+                  <router-link to="/show_school_tables">
+                    <el-button
+                      size="mini"
+                      type="info"
+                      @click="handleEdit(scope.$index, scope.row)">查看
+                    </el-button>
+                  </router-link>
+                  <router-link to="/creat_school_tables">
+                    <el-button
+                      size="mini"
+                      type="success"
+                      @click="handleEdit(scope.$index, scope.row)">新建
+                    </el-button>
+                  </router-link>
+                  <router-link to="/creat_school_tables">
                   <el-button
                     size="mini"
                     type="primary"
-                    @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+                    @click="handleEdit(scope.$index, scope.row)">修改
+                  </el-button>
+                  </router-link>
                   <el-button
                     size="mini"
                     type="danger"
-                    @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    @click="handleDelete(scope.$index, scope.row)">删除
+                  </el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -70,7 +84,7 @@ import axios from 'axios'
 
 export default {
   data () {
-    const students=[]
+    const students = []
     this.mockTest()//在渲染页面是初始时得到需要展示在前端的后端数据
     return {
       students,
@@ -80,20 +94,20 @@ export default {
 
   components: {ElSelectDropdown, sideBarRouter},
   methods: {
-    mockTest(){
+    mockTest () {
       axios.get('http://dataformmock.com').then((res) => {
-        console.log(res.data);
-        this.students=res.data
+        console.log(res.data)
+        this.students = res.data
       })
       /*axios.get('http://dataformmock.com').then(function(res){
         console.log(res.data);
       });*/
     },
-    handleEdit(index, row){
-      console.log(index, row);
+    handleEdit (index, row) {
+      console.log(index, row)
     },
-    handleDelete(index, row){
-      console.log(index, row);
+    handleDelete (index, row) {
+      console.log(index, row)
     }
   }
 }
@@ -101,7 +115,7 @@ export default {
 
 <style>
   /*去除容器最外层8px边框*/
-  *{
+  * {
     padding: 0;
     margin: 0;
   }

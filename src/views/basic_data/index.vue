@@ -30,12 +30,13 @@
                 <div class="add">
                   <el-button type="text" @click.prevent>先在下方输入，再在上方需要的地方点击添加</el-button>
                   <el-form v-model="newChild">
-                    <el-form-item label="选择关联项" :label-width="formLabelWidth">
+                    <el-form-item label="选择关联项" :label-width="formLabelWidth" style="left: auto">
                       <el-cascader
                         :options="data"
                         v-model="selectedOptions2"
                         :props="props"
-                        @change="handleChange">
+                        @change="handleChange"
+                        class="cas">
                       </el-cascader>
                     </el-form-item>
                     <el-form-item label="指标描述" :label-width="formLabelWidth">
@@ -155,6 +156,7 @@ export default {
         url: 'http://localhost:8080/schoolStandardDataForm/createSchoolDataForm',
         data: this.DFStoArray(),
       })
+      alert("保存成功！")
     },
 
     append (data) {
@@ -292,5 +294,9 @@ export default {
 
   .body {
     margin: 0;
+  }
+
+  .cas{
+
   }
 </style>

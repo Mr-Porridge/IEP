@@ -5,6 +5,7 @@ import showListRouter from './show_school_list'
 import schoolTablesRouter from './school_tables'
 import showSchoolTablesRouter from './school_tables/showSchoolTables'
 import creatSchoolTablesRouter from './school_tables/creatSchoolTables'
+import toBeDevelopedRouter from './to_be_developed'
 
 
 Vue.use(Router)
@@ -19,5 +20,6 @@ export default new Router({
     schoolTablesRouter,
     showSchoolTablesRouter,
     creatSchoolTablesRouter,
+    toBeDevelopedRouter,
   ]
 })
