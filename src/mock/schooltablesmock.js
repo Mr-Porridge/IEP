@@ -11,19 +11,30 @@ var fun = function(x){
 }*/
 var class_id=["仁（1）","仁（2）","智（1）","智（2）","礼（1）",]
 
-const students=[]
-for (let i = 0; i < 10; i++) {
+const studentsInfo=[]
+for (let i = 0; i < 11; i++) {
   let person = {
     'studentId':"@id",
-    "studentName": "@cname",
+    "name": "@cname",
     "classId|1": class_id,//通过重复属性值 arr 生成一个新数组，重复次数大于等于 2，小于等于 3。
     /*studentId:Mock.Random.guid,
     studentName: Mock.Random.cname(), // Random.cname() 随机生成一个常见的中文姓名
     classId: 2,  // Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd
     /!*c: Mock.Random.city(),  // Random.city() 随机生成一个城市的名字*!/*/
   }
-  students.push(person)
+  studentsInfo.push(person)
 }
+
+students = {
+    "code": 1,
+    "message": "success",
+    "data": {
+    "students": studentsInfo,
+    "totalCount": studentsInfo.length,
+  }
+}
+
+
 
 Mock.mock("http://dataformmock.com",students);
 

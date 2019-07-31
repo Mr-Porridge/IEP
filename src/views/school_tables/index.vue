@@ -11,10 +11,46 @@
           <el-main>
             <el-header>学生课表</el-header>
             <el-container>
-              <!--<el-button></el-button>-->
+              <div id="searchModal">
+                <el-form :inline="true">
+                  <el-form-item label="按姓名查询" @submit.native.prevent>
+                    <el-input
+                      placeholder="请输入学生姓名"
+                      v-model="SName"
+                      clearable>
+                    </el-input>
+                  </el-form-item>
+
+                    <el-button type="primary" @click="searchByName()">查询</el-button>
+
+                  <el-form-item label="按学号查询">
+                    <el-input
+                      placeholder="请输入学生学号"
+                      v-model="SId"
+                      clearable>
+                    </el-input>
+                  </el-form-item>
+
+                    <el-button type="primary" @click="searchById()">查询</el-button>
+
+                  <el-form-item label="按班级查询">
+                    <el-select v-model="classes" placeholder="班级名称">
+                      <el-option
+                        v-for="item in allClasses"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button type="primary" @click="searchByClass()">查询</el-button>
+                  </el-form-item>
+                </el-form>
+              </div>
             </el-container>
             <el-table
-              :data="students.filter(data => !search || data.studentId.toLowerCase().includes(search.toLowerCase()))"
+              :data="presentStudents"
               border
               style="width: 100%">
               <el-table-column
@@ -23,7 +59,7 @@
                 width="180">
               </el-table-column>
               <el-table-column
-                prop="studentName"
+                prop="name"
                 label="姓名"
                 width="180">
               </el-table-column>
@@ -31,13 +67,8 @@
                 prop="classId"
                 label="班级">
               </el-table-column>
-              <el-table-column>
-                <template slot="header" slot-scope="scope">
-                  <el-input
-                    v-model="search"
-                    size="mini"
-                    placeholder="输入学号搜索"></el-input>
-                </template>
+              <el-table-column
+                label="操作">
                 <template slot-scope="scope">
                   <router-link to="/show_school_tables">
                     <el-button
@@ -68,9 +99,16 @@
                 </template>
               </el-table-column>
             </el-table>
+            <div class="block" id="pagination">
+              <el-pagination
+                @current-change="handleCurrentChange"
+                layout="prev, pager, next"
+                :total=totalCount>
+              </el-pagination>
+            </div>
           </el-main>
         </el-container>
-        <!--<el-button type="primary" @click="mockTest">测试</el-button>-->
+        <el-button type="primary" @click="studentsFound()">测试</el-button>
       </el-main>
     </el-container>
   </div>
@@ -84,11 +122,45 @@ import axios from 'axios'
 
 export default {
   data () {
-    const students = []
-    this.mockTest()//在渲染页面是初始时得到需要展示在前端的后端数据
+    const allStudents = []
+
+    /*this.mockTest()*///在渲染页面是初始时得到需要展示在前端的后端数据
+    //因为初始时不需要数据展示，查询后得到数据 所以不需要渲染页面时获取数据
+
     return {
-      students,
-      search: ''
+      allStudents,
+      search: '',
+      SName:'',
+      SId:'',
+      classes:'',
+      totalCount:0,
+      allClasses:[
+        {
+          value: '仁（1）',
+          label: '仁（1）'
+        },
+        {
+          value: '仁（2）',
+          label: '仁（2）'
+        },
+        {
+          value: '仁（3）',
+          label: '仁（3）'
+        },
+        {
+          value: '智（1）',
+          label: '智（1）'
+        },
+        {
+          value: '智（2）',
+          label: '智（2）'
+        },
+        {
+          value: '礼（1）',
+          label: '礼（1）'
+        },
+      ],
+      presentStudents:[]
     }
   },
 
@@ -96,18 +168,78 @@ export default {
   methods: {
     mockTest () {
       axios.get('http://dataformmock.com').then((res) => {
-        console.log(res.data)
-        this.students = res.data
+        console.log(res.data.data.students);
+        this.allStudents = res.data.data.students;
       })
       /*axios.get('http://dataformmock.com').then(function(res){
         console.log(res.data);
       });*/
     },
+    searchByName(){
+      console.log(this.SName)
+      //向后端传递将要查询的名字
+      axios({
+        method: 'post',
+        url: 'www.iep.com/scheduleSet/name/student/',
+        data: this.SName,
+      })
+      this.SName = '';
+      this.studentsFound();
+    },
+
+    searchById(){
+      console.log(this.SId)
+      //向后端传递将要查询的id
+      axios({
+        method: 'post',
+        url: 'www.iep.com/scheduleSet/studentId/student/',
+        data: this.SId,
+      })
+      this.SId = '';
+      this.studentsFound();
+    },
+
+    searchByClass(){
+      console.log(this.classes)
+      //向后端传递将要查询的班级名称
+      axios({
+        method: 'post',
+        url: 'www.iep.com/scheduleSet/classId/student/',
+        data: this.classes,
+      })
+      this.classes = '';
+      this.studentsFound();
+    },
+
+    studentsFound(){
+      axios.get('http://dataformmock.com').then((res) => {
+        console.log(res.data.data.students);
+        this.allStudents = res.data.data.students;
+        this.totalCount = res.data.data.totalCount;
+        if(this.totalCount < 10){
+          this.presentStudents = this.allStudents.slice(0, this.totalCount);
+        }
+        else{
+          this.presentStudents = this.allStudents.slice(0, 10);
+        }
+      })
+    },
+
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      //console.log(this.presentStudents);
+      let begin = (val - 1) * 10;
+      let end = val * 10;
+      console.log("begin is: "+ begin + " ;end is: " + end);
+      this.presentStudents = this.allStudents.slice(begin, end);
+      console.log(this.presentStudents);
+    },
+
     handleEdit (index, row) {
-      console.log(index, row)
+      console.log(index, row);
     },
     handleDelete (index, row) {
-      console.log(index, row)
+      console.log(index, row);
     }
   }
 }
@@ -128,6 +260,14 @@ export default {
     line-height: 60px;
   }
 
+  .el-aside{
+    background-color: #545c64;
+  }
+
+
+  #pagination{
+    text-align: center;
+  }
 
   .el-main {
     background-color: #E9EEF3;
