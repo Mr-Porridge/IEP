@@ -21,7 +21,7 @@
                     </el-input>
                   </el-form-item>
 
-                    <el-button type="primary" @click="searchByName()">查询</el-button>
+                  <el-button type="primary" @click="searchByName()">查询</el-button>
 
                   <el-form-item label="按学号查询">
                     <el-input
@@ -31,7 +31,7 @@
                     </el-input>
                   </el-form-item>
 
-                    <el-button type="primary" @click="searchById()">查询</el-button>
+                  <el-button type="primary" @click="searchById()">查询</el-button>
 
                   <el-form-item label="按班级查询">
                     <el-select v-model="classes" placeholder="班级名称">
@@ -85,11 +85,11 @@
                     </el-button>
                   </router-link>
                   <router-link to="/creat_school_tables">
-                  <el-button
-                    size="mini"
-                    type="primary"
-                    @click="handleEdit(scope.$index, scope.row)">修改
-                  </el-button>
+                    <el-button
+                      size="mini"
+                      type="primary"
+                      @click="handleEdit(scope.$index, scope.row)">修改
+                    </el-button>
                   </router-link>
                   <el-button
                     size="mini"
@@ -108,7 +108,7 @@
             </div>
           </el-main>
         </el-container>
-        <el-button type="primary" @click="studentsFound()">测试</el-button>
+        <!--<el-button type="primary" @click="initPagination()">测试</el-button>-->
       </el-main>
     </el-container>
   </div>
@@ -130,11 +130,11 @@ export default {
     return {
       allStudents,
       search: '',
-      SName:'',
-      SId:'',
-      classes:'',
-      totalCount:0,
-      allClasses:[
+      SName: '',
+      SId: '',
+      classes: '',
+      totalCount: 0,
+      allClasses: [
         {
           value: '仁（1）',
           label: '仁（1）'
@@ -160,7 +160,7 @@ export default {
           label: '礼（1）'
         },
       ],
-      presentStudents:[]
+      presentStudents: []
     }
   },
 
@@ -168,78 +168,92 @@ export default {
   methods: {
     mockTest () {
       axios.get('http://dataformmock.com').then((res) => {
-        console.log(res.data.data.students);
-        this.allStudents = res.data.data.students;
+        console.log(res.data.data.students)
+        this.allStudents = res.data.data.students
       })
       /*axios.get('http://dataformmock.com').then(function(res){
         console.log(res.data);
       });*/
     },
-    searchByName(){
-      console.log(this.SName)
+    searchByName () {
+      console.log('查询的姓名：' + this.SName)
       //向后端传递将要查询的名字
       axios({
         method: 'post',
-        url: 'www.iep.com/scheduleSet/name/student/',
+        url:'http://dataformmock.com',
+        //url: 'www.iep.com/scheduleSet/name/student/',
         data: this.SName,
+      }).then((res) => {
+        console.log(res.config.data)
+        console.log(res.data.data.students)
+        this.allStudents = res.data.data.students
+        this.totalCount = res.data.data.totalCount
+        this.SName = ''
+        this.initPagination()
       })
-      this.SName = '';
-      this.studentsFound();
     },
 
-    searchById(){
-      console.log(this.SId)
+    searchById () {
+      console.log("查询的id："+this.SId)
       //向后端传递将要查询的id
       axios({
         method: 'post',
-        url: 'www.iep.com/scheduleSet/studentId/student/',
+        url:'http://dataformmock.com',
+        //url: 'www.iep.com/scheduleSet/studentId/student/',
         data: this.SId,
+      }).then((res) => {
+        console.log(res.config.data)
+        console.log(res.data.data.students)
+        this.allStudents = res.data.data.students
+        this.totalCount = res.data.data.totalCount
+        this.SId = ''
+        this.initPagination()
       })
-      this.SId = '';
-      this.studentsFound();
     },
 
-    searchByClass(){
-      console.log(this.classes)
+    searchByClass () {
+      console.log("查询的班级："+this.classes)
       //向后端传递将要查询的班级名称
       axios({
-        method: 'post',
-        url: 'www.iep.com/scheduleSet/classId/student/',
+        method: 'get',
+        url:'http://dataformmock.com',
+        //url: 'www.iep.com/scheduleSet/classId/student/',
         data: this.classes,
-      })
-      this.classes = '';
-      this.studentsFound();
-    },
-
-    studentsFound(){
-      axios.get('http://dataformmock.com').then((res) => {
-        console.log(res.data.data.students);
-        this.allStudents = res.data.data.students;
-        this.totalCount = res.data.data.totalCount;
-        if(this.totalCount < 10){
-          this.presentStudents = this.allStudents.slice(0, this.totalCount);
-        }
-        else{
-          this.presentStudents = this.allStudents.slice(0, 10);
-        }
+      }).then((res) => {
+        console.log(res.config.data)
+        console.log(res.data.data.students)
+        this.allStudents = res.data.data.students
+        this.totalCount = res.data.data.totalCount
+        this.classes = ''
+        this.initPagination()
       })
     },
 
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+    initPagination () {
+        //在此初始化分页的第一页
+        if (this.totalCount < 10) {
+          this.presentStudents = this.allStudents.slice(0, this.totalCount)
+        } else {
+          this.presentStudents = this.allStudents.slice(0, 10)
+        }
+    },
+
+    handleCurrentChange (val) {
+      //该函数再分页按钮改变时触发
+      console.log(`当前页: ${val}`)
       //console.log(this.presentStudents);
-      let begin = (val - 1) * 10;
-      let end = val * 10;
-      console.log("begin is: "+ begin + " ;end is: " + end);
-      this.presentStudents = this.allStudents.slice(begin, end);
-      console.log(this.presentStudents);
+      let begin = (val - 1) * 10
+      let end = val * 10
+      console.log('begin is: ' + begin + ' ;end is: ' + end)
+      this.presentStudents = this.allStudents.slice(begin, end)
+      console.log(this.presentStudents)
     },
 
     handleEdit (index, row) {
-      console.log(index, row);
+      console.log(index, row)
     },
     handleDelete (index, row) {
-      console.log(index, row);
+      console.log(index, row)
     }
   }
 }
@@ -260,12 +274,12 @@ export default {
     line-height: 60px;
   }
 
-  .el-aside{
+  .el-aside {
     background-color: #545c64;
   }
 
 
-  #pagination{
+  #pagination {
     text-align: center;
   }
 

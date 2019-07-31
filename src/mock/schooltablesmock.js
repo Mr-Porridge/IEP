@@ -35,7 +35,11 @@ students = {
 }
 
 
-
+/*Mock.mock("http://dataformmock.com", "get", (config) => {
+  console.log("后端接收到：");
+  console.log(config);
+  return students;
+})*/
 Mock.mock("http://dataformmock.com",students);
 
 
