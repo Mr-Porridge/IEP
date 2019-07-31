@@ -179,7 +179,7 @@ export default {
       console.log('查询的姓名：' + this.SName)
       //向后端传递将要查询的名字
       axios({
-        method: 'post',
+        method: 'get',
         url:'http://dataformmock.com',
         //url: 'www.iep.com/scheduleSet/name/student/',
         data: this.SName,
@@ -197,7 +197,7 @@ export default {
       console.log("查询的id："+this.SId)
       //向后端传递将要查询的id
       axios({
-        method: 'post',
+        method: 'get',
         url:'http://dataformmock.com',
         //url: 'www.iep.com/scheduleSet/studentId/student/',
         data: this.SId,
