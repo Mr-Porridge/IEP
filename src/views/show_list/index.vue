@@ -9,7 +9,9 @@
         <div id="creatSchoolTable">
           <el-row>
             <el-col :span="3"><div class="grid-content bg-purple">节次\星期</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">一</div></el-col>
+            <el-col :span="3" >
+              <div class="grid-content bg-purple-light">一</div>
+            </el-col>
             <el-col :span="3"><div class="grid-content bg-purple">二</div></el-col>
             <el-col :span="3"><div class="grid-content bg-purple-light">三</div></el-col>
             <el-col :span="3"><div class="grid-content bg-purple">四</div></el-col>
@@ -17,8 +19,8 @@
             <el-col :span="3"><div class="grid-content bg-purple">六</div></el-col>
             <el-col :span="3"><div class="grid-content bg-purple-light">日</div></el-col>
           </el-row>
-          <el-row :span="3" v-for="item in First" :key="item.id">
-            <el-col >
+          <el-row :span="3" v-for="item in Mon" :key="item.id">
+            <el-col :span="3">
               <div class="grid-content bg-purple-light">
                 <span>{{item.mes}}</span>
                 <el-button
@@ -30,6 +32,18 @@
                 </el-button>
               </div>
             </el-col>
+            <!--<el-col :span="3">
+              <div class="grid-content bg-purple-light">
+                <span>{{item.mes}}</span>
+                <el-button
+                  icon="el-icon-edit"
+                  circle
+                  type="primary"
+                  size="medium"
+                  @click="chooseLesson(item.id)">
+                </el-button>
+              </div>
+            </el-col>-->
             <!--<el-col :span="3">
               <div class="grid-content bg-purple">
                 <span>{{item.mes}}</span>
@@ -43,6 +57,7 @@
               </div>
             </el-col>-->
           </el-row>
+
 
 
           <div>
@@ -1053,6 +1068,7 @@ export default {
     },
 
     confirm () {
+      this.choosing.parentNode
       this.ttt[this.choosing].mes = this.formInline.region
       this.formInline.region = ""
       this.dialogFormVisible = false

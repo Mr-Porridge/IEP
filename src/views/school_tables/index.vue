@@ -108,7 +108,7 @@
             </div>
           </el-main>
         </el-container>
-        <!--<el-button type="primary" @click="initPagination()">测试</el-button>-->
+        <el-button type="primary" @click="ubc()">测试</el-button>
       </el-main>
     </el-container>
   </div>
@@ -117,7 +117,7 @@
 <script>/* eslint-disable */
 import sideBarRouter from '@/components/sideBar/index'
 import ElSelectDropdown from 'element-ui/packages/select/src/select-dropdown'
-import Mock from 'mockjs'
+/*import Mock from 'mockjs'*/
 import axios from 'axios'
 
 export default {
@@ -180,51 +180,59 @@ export default {
       //向后端传递将要查询的名字
       axios({
         method: 'get',
-        url:'http://dataformmock.com',
-        //url: 'www.iep.com/scheduleSet/name/student/',
-        data: this.SName,
+        //url:'http://dataformmock.com',
+        url: 'http://localhost:8082/scheduleSet/name/student/',
+        //用params的形式传递参数而不是data 这样使得传递的参数为原本实参类型而不是json
+        //Problem solved！
+        params:{
+          name:this.SName
+        },
       }).then((res) => {
-        console.log(res.config.data)
-        console.log(res.data.data.students)
-        this.allStudents = res.data.data.students
-        this.totalCount = res.data.data.totalCount
-        this.SName = ''
+        console.log(res.data.data)
+        this.allStudents = res.data.data
+        console.log(this.allStudents)
+        this.totalCount = res.data.data.length
         this.initPagination()
       })
     },
 
     searchById () {
-      console.log("查询的id："+this.SId)
+      console.log(this.SId)
       //向后端传递将要查询的id
       axios({
         method: 'get',
-        url:'http://dataformmock.com',
-        //url: 'www.iep.com/scheduleSet/studentId/student/',
-        data: this.SId,
+        // url:'http://dataformmock.com',
+        url: 'http://localhost:8082/scheduleSet/studentId/student/',
+        params: {
+          studentId: this.SId
+        }
       }).then((res) => {
-        console.log(res.config.data)
-        console.log(res.data.data.students)
-        this.allStudents = res.data.data.students
-        this.totalCount = res.data.data.totalCount
-        this.SId = ''
+        this.allStudents=[]
+        this.allStudents.push(res.data.data)
+        this.totalCount = this.allStudents.length
         this.initPagination()
       })
     },
+
 
     searchByClass () {
       console.log("查询的班级："+this.classes)
       //向后端传递将要查询的班级名称
       axios({
         method: 'get',
-        url:'http://dataformmock.com',
-        //url: 'www.iep.com/scheduleSet/classId/student/',
-        data: this.classes,
+        //url:'http://dataformmock.com',
+        url: 'http://localhost:8082/scheduleSet/classId/student/',
+        params:{
+          classId:this.classes,
+          pageNumber:0,
+          pageSize:10
+        }
       }).then((res) => {
-        console.log(res.config.data)
+        console.log(res.data.data)
         console.log(res.data.data.students)
         this.allStudents = res.data.data.students
         this.totalCount = res.data.data.totalCount
-        this.classes = ''
+        //this.classes = ''
         this.initPagination()
       })
     },
@@ -254,7 +262,15 @@ export default {
     },
     handleDelete (index, row) {
       console.log(index, row)
+    },
+
+    ubc(){
+      let req = new XMLHttpRequest();
+      req.open("GET", "http://localhost:3000/images");
+      console.log(req);
     }
+
+
   }
 }
 </script>
