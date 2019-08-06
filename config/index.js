@@ -9,7 +9,10 @@ module.exports = {
 
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    //开发及测试版本
+    //assetsPublicPath: '/',
+    //服务器版本
+    assetsPublicPath: '/group2/',
     proxyTable: {},
 
     // Various Dev Server settings
@@ -50,7 +53,10 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    //开发及测试版本
+    //assetsPublicPath: '/',
+    //服务器版本
+    assetsPublicPath: '/group2/',
 
     /**
      * Source Maps

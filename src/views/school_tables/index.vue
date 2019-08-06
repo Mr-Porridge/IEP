@@ -108,7 +108,7 @@
             </div>
           </el-main>
         </el-container>
-        <el-button type="primary" @click="ubc()">测试</el-button>
+        <el-button type="primary" @click="mockTest()">测试</el-button>
       </el-main>
     </el-container>
   </div>
@@ -117,7 +117,7 @@
 <script>/* eslint-disable */
 import sideBarRouter from '@/components/sideBar/index'
 import ElSelectDropdown from 'element-ui/packages/select/src/select-dropdown'
-/*import Mock from 'mockjs'*/
+import Mock from 'mockjs'
 import axios from 'axios'
 
 export default {
@@ -180,18 +180,19 @@ export default {
       //向后端传递将要查询的名字
       axios({
         method: 'get',
-        //url:'http://dataformmock.com',
-        url: 'http://localhost:8082/scheduleSet/name/student/',
+        url:'http://dataformmock.com',
+        //url: 'http://localhost:8082/scheduleSet/name/student/',
         //用params的形式传递参数而不是data 这样使得传递的参数为原本实参类型而不是json
         //Problem solved！
-        params:{
+        /*params:{
           name:this.SName
-        },
+        },*/
       }).then((res) => {
-        console.log(res.data.data)
-        this.allStudents = res.data.data
-        console.log(this.allStudents)
-        this.totalCount = res.data.data.length
+        //console.log("data.data"+res.data.data)
+        //console.log("students"+res.data.data.students)
+        this.allStudents = res.data.data.students
+        this.totalCount = res.data.data.totalCount
+        this.name = ''
         this.initPagination()
       })
     },
@@ -201,15 +202,17 @@ export default {
       //向后端传递将要查询的id
       axios({
         method: 'get',
-        // url:'http://dataformmock.com',
-        url: 'http://localhost:8082/scheduleSet/studentId/student/',
-        params: {
+        url:'http://dataformmock.com',
+        //url: 'http://localhost:8082/scheduleSet/studentId/student/',
+        /*params: {
           studentId: this.SId
-        }
+        }*/
       }).then((res) => {
-        this.allStudents=[]
-        this.allStudents.push(res.data.data)
-        this.totalCount = this.allStudents.length
+        //console.log("data.data"+res.data.data)
+        //console.log("students"+res.data.data.students)
+        this.allStudents = res.data.data.students
+        this.totalCount = res.data.data.totalCount
+        this.SId = ''
         this.initPagination()
       })
     },
@@ -221,15 +224,19 @@ export default {
       axios({
         method: 'get',
         //url:'http://dataformmock.com',
-        url: 'http://localhost:8082/scheduleSet/classId/student/',
-        params:{
+        //url: 'http://localhost:8082/scheduleSet/classId/student/',
+        //服务器版本
+        url:'http://xxxxxxx/group2_b/',
+
+
+        /*params:{
           classId:this.classes,
           pageNumber:0,
           pageSize:10
-        }
+        }*/
       }).then((res) => {
-        console.log(res.data.data)
-        console.log(res.data.data.students)
+        //console.log("data.data"+res.data.data)
+        //console.log("students"+res.data.data.students)
         this.allStudents = res.data.data.students
         this.totalCount = res.data.data.totalCount
         //this.classes = ''
@@ -239,6 +246,7 @@ export default {
 
     initPagination () {
         //在此初始化分页的第一页
+        console.log(this.allStudents)
         if (this.totalCount < 10) {
           this.presentStudents = this.allStudents.slice(0, this.totalCount)
         } else {
@@ -263,13 +271,6 @@ export default {
     handleDelete (index, row) {
       console.log(index, row)
     },
-
-    ubc(){
-      let req = new XMLHttpRequest();
-      req.open("GET", "http://localhost:3000/images");
-      console.log(req);
-    }
-
 
   }
 }
