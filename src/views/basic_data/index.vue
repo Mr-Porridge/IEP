@@ -127,7 +127,10 @@ export default {
     getSchoolData() {
       const data_1 = [1, 2, 3]
       const stack = []
-      const url = 'http://localhost:8080/schoolStandardDataForm/toSuperDataFormPage'
+      //开发测试版本
+      //const url = 'http://localhost:8080/schoolStandardDataForm/toSuperDataFormPage'
+      //服务器版本
+      const url = 'http://47.110.134.247/group2_b/schoolStandardDataForm/toSuperDataFormPage'
       axios.get(url).then((response) => {
         this.data = this.DFSNode(data_1, response.data, stack, data_1.length)
       })
@@ -153,7 +156,11 @@ export default {
     saveSchoolData () {
       axios({
         method: 'post',
-        url: 'http://localhost:8080/schoolStandardDataForm/createSchoolDataForm',
+        //开发测试版本
+        //url: 'http://localhost:8080/schoolStandardDataForm/createSchoolDataForm',
+        //服务器版本
+        url:'http://47.110.134.247/group2_b/schoolStandardDataForm/createSchoolDataForm',
+
         data: this.DFStoArray(),
       })
       alert("保存成功！")

@@ -184,9 +184,9 @@ export default {
         //url: 'http://localhost:8082/scheduleSet/name/student/',
         //用params的形式传递参数而不是data 这样使得传递的参数为原本实参类型而不是json
         //Problem solved！
-        /*params:{
+        params:{
           name:this.SName
-        },*/
+        },
       }).then((res) => {
         //console.log("data.data"+res.data.data)
         //console.log("students"+res.data.data.students)
@@ -202,11 +202,13 @@ export default {
       //向后端传递将要查询的id
       axios({
         method: 'get',
-        url:'http://dataformmock.com',
+        //url:'http://dataformmock.com',
         //url: 'http://localhost:8082/scheduleSet/studentId/student/',
-        /*params: {
+        //服务器版本
+        url:'http://47.110.134.247/group2_b/scheduleSet/studentId/student',
+        params: {
           studentId: this.SId
-        }*/
+        }
       }).then((res) => {
         //console.log("data.data"+res.data.data)
         //console.log("students"+res.data.data.students)
@@ -226,14 +228,14 @@ export default {
         //url:'http://dataformmock.com',
         //url: 'http://localhost:8082/scheduleSet/classId/student/',
         //服务器版本
-        url:'http://xxxxxxx/group2_b/',
+        url:'http://47.110.134.247/group2_b/classId/student/',
 
 
-        /*params:{
+        params:{
           classId:this.classes,
           pageNumber:0,
           pageSize:10
-        }*/
+        }
       }).then((res) => {
         //console.log("data.data"+res.data.data)
         //console.log("students"+res.data.data.students)
