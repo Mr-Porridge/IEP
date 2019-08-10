@@ -2,7 +2,7 @@
 require('@/mock/schooltablesmock')
 require('@/mock/coursesmock')
 require('@/mock/creatschooltablesmock')
-
+require('@/mock/chooseablecoursesmock')
 
 
 // 在这里可以做一些通用的配置

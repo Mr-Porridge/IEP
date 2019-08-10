@@ -70,7 +70,7 @@
               <el-table-column
                 label="操作">
                 <template slot-scope="scope">
-                  <router-link to="/show_school_tables">
+                  <router-link :to="{name:'show_school_tables' ,params:{'name':'scope.row.name'}}">
                     <el-button
                       size="mini"
                       type="info"
@@ -180,20 +180,27 @@ export default {
       //向后端传递将要查询的名字
       axios({
         method: 'get',
-        //url:'http://dataformmock.com',
-        url: 'http://localhost:8082/scheduleSet/name/student/',
+        url:'http://dataformmock.com',
+        //url: 'http://localhost:8082/scheduleSet/name/student/',
         //用params的形式传递参数而不是data 这样使得传递的参数为原本实参类型而不是json
         //Problem solved！
-        params:{
+        /*params:{
           name:this.SName
-        },
+        },*/
       }).then((res) => {
+        console.log(res.data.data)
+        console.log(res.data.data.students)
+        this.allStudents = res.data.data.students
+        this.totalCount = res.data.data.totalCount
+        //this.classes = ''
+        this.initPagination()
+      })/*then((res) => {
         console.log(res.data.data)
         this.allStudents = res.data.data
         console.log(this.allStudents)
         this.totalCount = res.data.data.length
         this.initPagination()
-      })
+      })*/
     },
 
     searchById () {
@@ -201,11 +208,11 @@ export default {
       //向后端传递将要查询的id
       axios({
         method: 'get',
-        // url:'http://dataformmock.com',
-        url: 'http://localhost:8082/scheduleSet/studentId/student/',
-        params: {
+        url:'http://dataformmock.com',
+        //url: 'http://localhost:8082/scheduleSet/studentId/student/',
+        /*params: {
           studentId: this.SId
-        }
+        }*/
       }).then((res) => {
         this.allStudents=[]
         this.allStudents.push(res.data.data)
@@ -220,13 +227,13 @@ export default {
       //向后端传递将要查询的班级名称
       axios({
         method: 'get',
-        //url:'http://dataformmock.com',
-        url: 'http://localhost:8082/scheduleSet/classId/student/',
-        params:{
+        url:'http://dataformmock.com',
+        //url: 'http://localhost:8082/scheduleSet/classId/student/',
+        /*params:{
           classId:this.classes,
           pageNumber:0,
           pageSize:10
-        }
+        }*/
       }).then((res) => {
         console.log(res.data.data)
         console.log(res.data.data.students)
@@ -260,16 +267,10 @@ export default {
     handleEdit (index, row) {
       console.log(index, row)
     },
+
     handleDelete (index, row) {
       console.log(index, row)
     },
-
-    ubc(){
-      let req = new XMLHttpRequest();
-      req.open("GET", "http://localhost:3000/images");
-      console.log(req);
-    }
-
 
   }
 }

@@ -2,25 +2,46 @@
 <template>
   <div>
     <el-container style="margin-outside: 0">
-      <el-aside width="200px">
-        <side-bar-router></side-bar-router>
-      </el-aside>
+      <!-- <el-aside width="200px">
+         <side-bar-router></side-bar-router>
+       </el-aside>-->
       <el-main>
+        <el-tag
+          v-for="item in heads"
+          :key="item.key"
+          :type="item.type"
+          effect="dark">
+          {{ item.label }}
+        </el-tag>
         <div id="creatSchoolTable">
           <el-row>
-            <el-col :span="3"><div class="grid-content bg-purple">节次\星期</div></el-col>
-            <el-col :span="3" >
+            <el-col :span="3">
+              <div class="grid-content bg-purple">节次\星期</div>
+            </el-col>
+            <el-col :span="3">
               <div class="grid-content bg-purple-light">一</div>
             </el-col>
-            <el-col :span="3"><div class="grid-content bg-purple">二</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">三</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple">四</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">五</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple">六</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">日</div></el-col>
-          </el-row>
-          <el-row :span="3" v-for="item in Mon" :key="item.id">
             <el-col :span="3">
+              <div class="grid-content bg-purple">二</div>
+            </el-col>
+            <el-col :span="3">
+              <div class="grid-content bg-purple-light">三</div>
+            </el-col>
+            <el-col :span="3">
+              <div class="grid-content bg-purple">四</div>
+            </el-col>
+            <el-col :span="3">
+              <div class="grid-content bg-purple-light">五</div>
+            </el-col>
+            <el-col :span="3">
+              <div class="grid-content bg-purple">六</div>
+            </el-col>
+            <el-col :span="3">
+              <div class="grid-content bg-purple-light">日</div>
+            </el-col>
+          </el-row>
+          <el-row :span="3">
+            <el-col :span="3" v-for="item in coursesNames" :key="item.id">
               <div class="grid-content bg-purple-light">
                 <span>{{item.mes}}</span>
                 <el-button
@@ -32,41 +53,21 @@
                 </el-button>
               </div>
             </el-col>
-            <!--<el-col :span="3">
-              <div class="grid-content bg-purple-light">
-                <span>{{item.mes}}</span>
-                <el-button
-                  icon="el-icon-edit"
-                  circle
-                  type="primary"
-                  size="medium"
-                  @click="chooseLesson(item.id)">
-                </el-button>
-              </div>
-            </el-col>-->
-            <!--<el-col :span="3">
-              <div class="grid-content bg-purple">
-                <span>{{item.mes}}</span>
-                <el-button
-                  icon="el-icon-edit"
-                  circle
-                  type="primary"
-                  size="medium"
-                  @click="chooseLesson(item.id)">
-                </el-button>
-              </div>
-            </el-col>-->
           </el-row>
 
-
+          <el-button type="primary" @click="save()">保存</el-button>
 
           <div>
             <el-dialog title="选择课程" :visible.sync="dialogFormVisible">
               <el-form :inline="true" :model="formInline" class="demo-form-inline">
                 <el-form-item label="课程选择">
                   <el-select v-model="formInline.region" placeholder="下拉选择课程">
-                    <el-option label="英语" value="英语"></el-option>
-                    <el-option label="计算机" value="计算机"></el-option>
+                    <el-option
+                      v-for="item in options"
+                      :key="item.id"
+                      :label="item.id"
+                      :value="item.label">
+                    </el-option>
                   </el-select>
                 </el-form-item>
               </el-form>
@@ -91,962 +92,23 @@ import axios from 'axios'
 export default {
   data () {
     this.mockTest()//在渲染页面是初始时得到需要展示在前端的后端数据
+    this.mockTest2()
     return {
-      choosing: 100,
-      coursesNames: [],
-      /*fff:[
-        {
-        id: 0,
-        mes: '暂无课程'
-      },
-        {
-          id: 1,
-          mes: '暂无课程f'
-        },
-        {
-          id: 2,
-          mes: '暂无课程f'
-        },
-        {
-          id: 3,
-          mes: '暂无课程f'
-        },
-        {
-          id: 4,
-          mes: '暂无课程f'
-        },
-        {
-          id: 5,
-          mes: '暂无课程f'
-        },
-        {
-          id: 6,
-          mes: '暂无课程f'
-        },
-        {
-          id: 7,
-          mes: '暂无课程f'
-        }],*/
-      First: [
-
-
-        {
-          id: 0,
-          mes: '第一节课'
-        },
-        {
-          id: 1,
-          mes: '第二节课'
-        },
-        {
-          id: 2,
-          mes: '第三节课'
-        },
-        {
-          id: 3,
-          mes: '第四节课'
-        },
-        {
-          id: 4,
-          mes: '第五节课'
-        },
-        {
-          id: 5,
-          mes: '第六节课'
-        },
-        {
-          id: 6,
-          mes: '第七节课'
-        },
-        {
-          id: 7,
-          mes: '第八节课'
-        }
-
-
-
-        /*{
-          id: 1,
-          day: [
-            {
-              id: 8,
-              mes: '暂无课程'
-            },
-            {
-              id: 9,
-              mes: '暂无课程'
-            },
-            {
-              id: 10,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },
-        {
-          id: 2,
-          day: [
-            {
-              id: 0,
-              mes: '暂无课程'
-            },
-            {
-              id: 1,
-              mes: '暂无课程'
-            },
-            {
-              id: 2,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },*/],
-      Mon: [
-
-
-        {
-          id: 0,
-          mes: '暂无课程'
-        },
-        {
-          id: 1,
-          mes: '暂无课程'
-        },
-        {
-          id: 2,
-          mes: '暂无课程'
-        },
-        {
-          id: 3,
-          mes: '暂无课程'
-        },
-        {
-          id: 4,
-          mes: '暂无课程'
-        },
-        {
-          id: 5,
-          mes: '暂无课程'
-        },
-        {
-          id: 6,
-          mes: '暂无课程'
-        },
-        {
-          id: 7,
-          mes: '暂无课程'
-        }
-
-
-
-        /*{
-          id: 1,
-          day: [
-            {
-              id: 8,
-              mes: '暂无课程'
-            },
-            {
-              id: 9,
-              mes: '暂无课程'
-            },
-            {
-              id: 10,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },
-        {
-          id: 2,
-          day: [
-            {
-              id: 0,
-              mes: '暂无课程'
-            },
-            {
-              id: 1,
-              mes: '暂无课程'
-            },
-            {
-              id: 2,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },*/],
-      Tue: [
-
-
-        {
-          id: 0,
-          mes: '暂无课程'
-        },
-        {
-          id: 1,
-          mes: '暂无课程'
-        },
-        {
-          id: 2,
-          mes: '暂无课程'
-        },
-        {
-          id: 3,
-          mes: '暂无课程'
-        },
-        {
-          id: 4,
-          mes: '暂无课程'
-        },
-        {
-          id: 5,
-          mes: '暂无课程'
-        },
-        {
-          id: 6,
-          mes: '暂无课程'
-        },
-        {
-          id: 7,
-          mes: '暂无课程'
-        }
-
-
-
-        /*{
-          id: 1,
-          day: [
-            {
-              id: 8,
-              mes: '暂无课程'
-            },
-            {
-              id: 9,
-              mes: '暂无课程'
-            },
-            {
-              id: 10,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },
-        {
-          id: 2,
-          day: [
-            {
-              id: 0,
-              mes: '暂无课程'
-            },
-            {
-              id: 1,
-              mes: '暂无课程'
-            },
-            {
-              id: 2,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },*/],
-      Wen: [
-
-
-        {
-          id: 0,
-          mes: '暂无课程'
-        },
-        {
-          id: 1,
-          mes: '暂无课程'
-        },
-        {
-          id: 2,
-          mes: '暂无课程'
-        },
-        {
-          id: 3,
-          mes: '暂无课程'
-        },
-        {
-          id: 4,
-          mes: '暂无课程'
-        },
-        {
-          id: 5,
-          mes: '暂无课程'
-        },
-        {
-          id: 6,
-          mes: '暂无课程'
-        },
-        {
-          id: 7,
-          mes: '暂无课程'
-        }
-
-
-
-        /*{
-          id: 1,
-          day: [
-            {
-              id: 8,
-              mes: '暂无课程'
-            },
-            {
-              id: 9,
-              mes: '暂无课程'
-            },
-            {
-              id: 10,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },
-        {
-          id: 2,
-          day: [
-            {
-              id: 0,
-              mes: '暂无课程'
-            },
-            {
-              id: 1,
-              mes: '暂无课程'
-            },
-            {
-              id: 2,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },*/],
-      Thu: [
-
-
-        {
-          id: 0,
-          mes: '暂无课程'
-        },
-        {
-          id: 1,
-          mes: '暂无课程'
-        },
-        {
-          id: 2,
-          mes: '暂无课程'
-        },
-        {
-          id: 3,
-          mes: '暂无课程'
-        },
-        {
-          id: 4,
-          mes: '暂无课程'
-        },
-        {
-          id: 5,
-          mes: '暂无课程'
-        },
-        {
-          id: 6,
-          mes: '暂无课程'
-        },
-        {
-          id: 7,
-          mes: '暂无课程'
-        }
-
-
-
-        /*{
-          id: 1,
-          day: [
-            {
-              id: 8,
-              mes: '暂无课程'
-            },
-            {
-              id: 9,
-              mes: '暂无课程'
-            },
-            {
-              id: 10,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },
-        {
-          id: 2,
-          day: [
-            {
-              id: 0,
-              mes: '暂无课程'
-            },
-            {
-              id: 1,
-              mes: '暂无课程'
-            },
-            {
-              id: 2,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },*/],
-      Fri: [
-
-
-        {
-          id: 0,
-          mes: '暂无课程'
-        },
-        {
-          id: 1,
-          mes: '暂无课程'
-        },
-        {
-          id: 2,
-          mes: '暂无课程'
-        },
-        {
-          id: 3,
-          mes: '暂无课程'
-        },
-        {
-          id: 4,
-          mes: '暂无课程'
-        },
-        {
-          id: 5,
-          mes: '暂无课程'
-        },
-        {
-          id: 6,
-          mes: '暂无课程'
-        },
-        {
-          id: 7,
-          mes: '暂无课程'
-        }
-
-
-
-        /*{
-          id: 1,
-          day: [
-            {
-              id: 8,
-              mes: '暂无课程'
-            },
-            {
-              id: 9,
-              mes: '暂无课程'
-            },
-            {
-              id: 10,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },
-        {
-          id: 2,
-          day: [
-            {
-              id: 0,
-              mes: '暂无课程'
-            },
-            {
-              id: 1,
-              mes: '暂无课程'
-            },
-            {
-              id: 2,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },*/],
-      Sat: [
-
-
-        {
-          id: 0,
-          mes: '暂无课程'
-        },
-        {
-          id: 1,
-          mes: '暂无课程'
-        },
-        {
-          id: 2,
-          mes: '暂无课程'
-        },
-        {
-          id: 3,
-          mes: '暂无课程'
-        },
-        {
-          id: 4,
-          mes: '暂无课程'
-        },
-        {
-          id: 5,
-          mes: '暂无课程'
-        },
-        {
-          id: 6,
-          mes: '暂无课程'
-        },
-        {
-          id: 7,
-          mes: '暂无课程'
-        }
-
-
-
-        /*{
-          id: 1,
-          day: [
-            {
-              id: 8,
-              mes: '暂无课程'
-            },
-            {
-              id: 9,
-              mes: '暂无课程'
-            },
-            {
-              id: 10,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },
-        {
-          id: 2,
-          day: [
-            {
-              id: 0,
-              mes: '暂无课程'
-            },
-            {
-              id: 1,
-              mes: '暂无课程'
-            },
-            {
-              id: 2,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },*/],
-      Sun: [
-
-
-        {
-          id: 0,
-          mes: '暂无课程'
-        },
-        {
-          id: 1,
-          mes: '暂无课程'
-        },
-        {
-          id: 2,
-          mes: '暂无课程'
-        },
-        {
-          id: 3,
-          mes: '暂无课程'
-        },
-        {
-          id: 4,
-          mes: '暂无课程'
-        },
-        {
-          id: 5,
-          mes: '暂无课程'
-        },
-        {
-          id: 6,
-          mes: '暂无课程'
-        },
-        {
-          id: 7,
-          mes: '暂无课程'
-        }
-
-
-
-        /*{
-          id: 1,
-          day: [
-            {
-              id: 8,
-              mes: '暂无课程'
-            },
-            {
-              id: 9,
-              mes: '暂无课程'
-            },
-            {
-              id: 10,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },
-        {
-          id: 2,
-          day: [
-            {
-              id: 0,
-              mes: '暂无课程'
-            },
-            {
-              id: 1,
-              mes: '暂无课程'
-            },
-            {
-              id: 2,
-              mes: '暂无课程'
-            },
-            {
-              id: 3,
-              mes: '暂无课程'
-            },
-            {
-              id: 4,
-              mes: '暂无课程'
-            },
-            {
-              id: 5,
-              mes: '暂无课程'
-            },
-            {
-              id: 6,
-              mes: '暂无课程'
-            },
-            {
-              id: 7,
-              mes: '暂无课程'
-            }
-
-          ]
-        },*/],
-      yyy: 'I changed!',
+      choosing: 100,//为了reform学生课表制作
+      coursesNames: [],//学生课程表
       dialogFormVisible: false,
       courseName: {mes: '暂无课程'},
       formLabelWidth: '120px',
       formInline: {
         user: '',
         region: ''
-      }
+      },
+      options: [],//可选课程
+      //题头---学年  学期
+      heads: [
+        {type: '', label: '', key: 0},
+        {type: '', label: '', key: 1},
+      ],
     }
   },
 
@@ -1056,7 +118,21 @@ export default {
       axios.get('http://creatschooltablesmock.com').then((res) => {
         //console.log(res.data)
         /*console.log(res.data[0].Monday);*/
-        this.coursesNames = res.data
+        this.coursesNames = res.data.courses
+        this.heads[0].type = 'success'
+        this.heads[0].label = res.data.year + '学年'
+        this.heads[1].type = ''
+        this.heads[1].label = '第 ' + res.data.semester + ' 学期'
+        //console.log(this.coursesNames)
+        this.reformList()
+      })
+    },
+
+    mockTest2 () {
+      axios.get('http://chooseablecoursesmock.com').then((res) => {
+        this.options = res.data
+        console.log(this.options)
+        //this.reformList()
       })
     },
 
@@ -1068,15 +144,41 @@ export default {
     },
 
     confirm () {
-      this.choosing.parentNode
-      this.ttt[this.choosing].mes = this.formInline.region
-      this.formInline.region = ""
+      let id = this.choosing
+      //因为添加了"第X节课"导致数组下标发生变化但是id不变化 所以id = id + Math.floor(id/8)
+      this.coursesNames[id + Math.floor(id / 8)].mes = this.formInline.region
+      this.formInline.region = ''
       this.dialogFormVisible = false
     },
 
+    reformList () {
+      console.log('Hello')
+      this.coursesNames.unshift({id: 101, mes: '第一节课'})
+      this.coursesNames.splice(8, 0, {id: 102, mes: '第二节课'})
+      this.coursesNames.splice(16, 0, {id: 103, mes: '第三节课'})
+      this.coursesNames.splice(24, 0, {id: 104, mes: '第四节课'})
+      this.coursesNames.splice(32, 0, {id: 105, mes: '第五节课'})
+      this.coursesNames.splice(40, 0, {id: 106, mes: '第六节课'})
+      this.coursesNames.splice(48, 0, {id: 107, mes: '第七节课'})
+      console.log(this.coursesNames)
+    },
+
+    save () {
+      console.log('保存成功')
+      axios({
+        method: 'post',
+        url: 'localhost:8082/scheduleSet/personalSchedule/save',
+        params:{
+          studentId: "",
+          year: this.heads[0].label,
+          semester: this.heads[1].label,
+          courses: this.coursesNames,
+        }
+      })
+      alert('保存成功！')
+    }
+
   },
-
-
 
 }
 
