@@ -115,7 +115,9 @@ export default {
   components: {ElSelectDropdown, sideBarRouter},
   methods: {
     mockTest () {
-      axios.get('http://creatschooltablesmock.com').then((res) => {
+      //测试用例localhost:8082/scheduleSet/personalSchedule/
+      //开发用http://creatschooltablesmock.com
+      axios.get('localhost:8082/scheduleSet/personalSchedule/').then((res) => {
         //console.log(res.data)
         /*console.log(res.data[0].Monday);*/
         this.coursesNames = res.data.courses
@@ -129,7 +131,9 @@ export default {
     },
 
     mockTest2 () {
-      axios.get('http://chooseablecoursesmock.com').then((res) => {
+      //开发用http://chooseablecoursesmock.com
+      //测试用localhost:8082/scheduleSet/courses/
+      axios.get('localhost:8082/scheduleSet/courses/').then((res) => {
         this.options = res.data
         console.log(this.options)
         //this.reformList()
