@@ -61,7 +61,7 @@
 <script>/* eslint-disable */
 import sideBarRouter from '@/components/sideBar/index'
 import ElSelectDropdown from 'element-ui/packages/select/src/select-dropdown'
-import Mock from 'mockjs'
+/*import Mock from 'mockjs'*/
 import axios from 'axios'
 
 export default {
@@ -88,33 +88,39 @@ export default {
     mockTest () {
       axios({
         method: 'get',
-        url: 'http://coursesmock.com',
-        //url: 'http://localhost:8082/scheduleSet/studentId/student/',
-        /*params: {
-          studentId: this.SId
-        }*/
+        //url: 'http://coursesmock.com',
+        url: 'http://localhost:8082/scheduleSet/personalSchedule/',
+        params: {
+          'year': '2018/2019',
+          'semester': '1',
+          'studentId': 'B17040523'
+        }
       }).then((res) => {
-        this.coursesNames = res.data.courses
+        //console.log(res.data.data)
+        let temp = JSON.parse(res.data.data.courses)
         this.heads[0].type = 'success'
-        this.heads[0].label = res.data.year + '学年'
+        this.heads[0].label = res.data.data.year + '学年'
         this.heads[1].type = ''
-        this.heads[1].label = '第 ' + res.data.semester + ' 学期'
-        this.reformList()
+        this.heads[1].label = '第 ' + res.data.data.semester + ' 学期'
+        console.log(temp)
+        for(let item in temp){
+          if(temp.hasOwnProperty(item)){
+            //需要检查
+            this.coursesNames.push({id:item, mes:temp[item]})
+          }
+        }
+        console.log(this.coursesNames)
+        this.coursesNames.unshift({id: 101, mes: '第一节课'})
+        this.coursesNames.splice(8, 0, {id: 102, mes: '第二节课'})
+        this.coursesNames.splice(16, 0, {id: 103, mes: '第三节课'})
+        this.coursesNames.splice(24, 0, {id: 104, mes: '第四节课'})
+        this.coursesNames.splice(32, 0, {id: 105, mes: '第五节课'})
+        this.coursesNames.splice(40, 0, {id: 106, mes: '第六节课'})
+        this.coursesNames.splice(48, 0, {id: 107, mes: '第七节课'})
+        console.log(this.coursesNames)
       })
     },
 
-
-    reformList () {
-      console.log('Hello')
-      this.coursesNames.unshift({id: 101, mes: '第一节课'})
-      this.coursesNames.splice(8, 0, {id: 102, mes: '第二节课'})
-      this.coursesNames.splice(16, 0, {id: 103, mes: '第三节课'})
-      this.coursesNames.splice(24, 0, {id: 104, mes: '第四节课'})
-      this.coursesNames.splice(32, 0, {id: 105, mes: '第五节课'})
-      this.coursesNames.splice(40, 0, {id: 106, mes: '第六节课'})
-      this.coursesNames.splice(48, 0, {id: 107, mes: '第七节课'})
-      console.log(this.coursesNames)
-    },
   }
 }
 </script>

@@ -185,15 +185,19 @@ export default {
         //用params的形式传递参数而不是data 这样使得传递的参数为原本实参类型而不是json
         //Problem solved！
         params:{
-          name:this.SName
+          "name":this.SName
         },
       }).then((res) => {
-        console.log(res.data.data)
-        console.log(res.data.data.students)
-        this.allStudents = res.data.data.students
-        this.totalCount = res.data.data.totalCount
-        //this.classes = ''
+        //console.log("This is res.data.data",res.data.data)
+        //console.log(res.data.data)
+        this.allStudents=[]
+        for (let i = 0; i < res.data.data.length; i++) {
+          this.allStudents.push(res.data.data[i])
+        }
+        this.totalCount = this.allStudents.length
         this.initPagination()
+        //搜索时清空其他输入框
+        this.SId = this.classes = ''
       })/*then((res) => {
         console.log(res.data.data)
         this.allStudents = res.data.data
@@ -211,13 +215,15 @@ export default {
         //url:'http://dataformmock.com',
         url: 'http://localhost:8082/scheduleSet/studentId/student/',
         params: {
-          studentId: this.SId
+          "studentId": this.SId
         }
       }).then((res) => {
         this.allStudents=[]
         this.allStudents.push(res.data.data)
         this.totalCount = this.allStudents.length
         this.initPagination()
+        //搜索时清空其他输入框
+        this.SName = this.classes = ''
       })
     },
 
@@ -230,9 +236,9 @@ export default {
         //url:'http://dataformmock.com',
         url: 'http://localhost:8082/scheduleSet/classId/student/',
         params:{
-          classId:this.classes,
-          pageNumber:0,
-          pageSize:10
+          "classId":this.classes,
+          "pageNumber":0,
+          "pageSize":10
         }
       }).then((res) => {
         console.log(res.data.data)
@@ -241,6 +247,8 @@ export default {
         this.totalCount = res.data.data.totalCount
         //this.classes = ''
         this.initPagination()
+        //搜索时清空其他输入框
+        this.SId = this.SName = ''
       })
     },
 

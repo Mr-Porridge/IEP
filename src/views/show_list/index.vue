@@ -2,7 +2,7 @@
 <template>
   <div>
     <el-container style="margin-outside: 0">
-      <!-- <el-aside width="200px">
+       <!--<el-aside width="200px">
          <side-bar-router></side-bar-router>
        </el-aside>-->
       <el-main>
@@ -86,13 +86,13 @@
 <script>/* eslint-disable */
 import sideBarRouter from '@/components/sideBar/index'
 import ElSelectDropdown from 'element-ui/packages/select/src/select-dropdown'
-import Mock from 'mockjs'
+/*import Mock from 'mockjs'*/
 import axios from 'axios'
 
 export default {
   data () {
     this.mockTest()//在渲染页面是初始时得到需要展示在前端的后端数据
-    this.mockTest2()
+    this.getOptionalCourses()
     return {
       choosing: 100,//为了reform学生课表制作
       coursesNames: [],//学生课程表
@@ -115,29 +115,52 @@ export default {
   components: {ElSelectDropdown, sideBarRouter},
   methods: {
     mockTest () {
-      //测试用例localhost:8082/scheduleSet/personalSchedule/
-      //开发用http://creatschooltablesmock.com
-      axios.get('localhost:8082/scheduleSet/personalSchedule/').then((res) => {
-        //console.log(res.data)
-        /*console.log(res.data[0].Monday);*/
-        this.coursesNames = res.data.courses
+      axios({
+        method: 'get',
+        //url: 'http://coursesmock.com',
+        url: 'http://localhost:8082/scheduleSet/personalSchedule/',
+        params: {
+          'year': '2018/2019',
+          'semester': '1',
+          'studentId': 'B17049908'
+        }
+      }).then((res) => {
+        //console.log(res.data.data)
+        let temp = JSON.parse(res.data.data.courses)
         this.heads[0].type = 'success'
-        this.heads[0].label = res.data.year + '学年'
+        this.heads[0].label = res.data.data.year + '学年'
         this.heads[1].type = ''
-        this.heads[1].label = '第 ' + res.data.semester + ' 学期'
+        this.heads[1].label = '第 ' + res.data.data.semester + ' 学期'
+        //console.log(temp)
+        for(let item in temp){
+          if(temp.hasOwnProperty(item)){
+            //需要检查
+            this.coursesNames.push({id:item, mes:temp[item]})
+          }
+        }
         //console.log(this.coursesNames)
-        this.reformList()
+        this.reformList(this.coursesNames)
+        //console.log(this.coursesNames)
       })
     },
 
-    mockTest2 () {
+    getOptionalCourses () {
       //开发用http://chooseablecoursesmock.com
-      //测试用localhost:8082/scheduleSet/courses/
-      axios.get('localhost:8082/scheduleSet/courses/').then((res) => {
-        this.options = res.data
-        console.log(this.options)
-        //this.reformList()
+      //测试用http://localhost:8082/scheduleSet/courses/
+      axios({
+        method: 'get',
+        //url: 'http://coursesmock.com',
+        url: 'http://localhost:8082/scheduleSet/courses/',
+        params: {
+          'pageNumber': '1',
+          'pageSize': '10',
+        }
+      }).then((res) => {
+        console.log(res.data.data)
+        this.options = res.data.data.courses
+
       })
+
     },
 
     chooseLesson (buttonId) {
@@ -156,7 +179,6 @@ export default {
     },
 
     reformList () {
-      console.log('Hello')
       this.coursesNames.unshift({id: 101, mes: '第一节课'})
       this.coursesNames.splice(8, 0, {id: 102, mes: '第二节课'})
       this.coursesNames.splice(16, 0, {id: 103, mes: '第三节课'})
@@ -164,22 +186,22 @@ export default {
       this.coursesNames.splice(32, 0, {id: 105, mes: '第五节课'})
       this.coursesNames.splice(40, 0, {id: 106, mes: '第六节课'})
       this.coursesNames.splice(48, 0, {id: 107, mes: '第七节课'})
-      console.log(this.coursesNames)
+      //console.log(this.coursesNames)
     },
 
     save () {
       console.log('保存成功')
       axios({
         method: 'post',
-        url: 'localhost:8082/scheduleSet/personalSchedule/save',
+        url: 'http://localhost:8082/scheduleSet/personalSchedule/save',
         params:{
-          studentId: "",
-          year: this.heads[0].label,
-          semester: this.heads[1].label,
-          courses: this.coursesNames,
+          "studentId": "B17040523",
+          "year": this.heads[0].label,
+          "semester": this.heads[1].label,
+          "courses": JSON.stringify(this.coursesNames),
         }
       })
-      alert('保存成功！')
+      //alert('保存成功！')
     }
 
   },
