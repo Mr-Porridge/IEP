@@ -2,9 +2,9 @@
 <template>
   <div>
     <el-container style="margin-outside: 0">
-       <!--<el-aside width="200px">
-         <side-bar-router></side-bar-router>
-       </el-aside>-->
+      <!--<el-aside width="200px">
+        <side-bar-router></side-bar-router>
+      </el-aside>-->
       <el-main>
         <el-tag
           v-for="item in heads"
@@ -65,8 +65,8 @@
                     <el-option
                       v-for="item in options"
                       :key="item.id"
-                      :label="item.id"
-                      :value="item.label">
+                      :label="item"
+                      :value="item">
                     </el-option>
                   </el-select>
                 </el-form-item>
@@ -91,24 +91,36 @@ import axios from 'axios'
 
 export default {
   data () {
+    this.getParams()
     this.mockTest()//在渲染页面是初始时得到需要展示在前端的后端数据
     this.getOptionalCourses()
     return {
+      //页面跳转之后的参数 由他们接收
+      year: '',//学年
+      semester: 0,//学期
+      studentId: '',//id
+
+      st: [],
       choosing: 100,//为了reform学生课表制作
       coursesNames: [],//学生课程表
-      dialogFormVisible: false,
-      courseName: {mes: '暂无课程'},
+      dialogFormVisible: false,//弹框的显隐
+      courseName: {mes: '暂无课程'},//存放学生课表
+      //存放题头---学年  学期
+      heads: [
+        {type: '', label: '', key: 0},
+        {type: '', label: '', key: 1},
+      ],
+      options: [],//存放可选课程
+
       formLabelWidth: '120px',
       formInline: {
         user: '',
         region: ''
       },
-      options: [],//可选课程
-      //题头---学年  学期
-      heads: [
-        {type: '', label: '', key: 0},
-        {type: '', label: '', key: 1},
-      ],
+
+      test:{},
+
+
     }
   },
 
@@ -120,22 +132,32 @@ export default {
         //url: 'http://coursesmock.com',
         url: 'http://localhost:8082/scheduleSet/personalSchedule/',
         params: {
-          'year': '2018/2019',
-          'semester': '1',
-          'studentId': 'B17049908'
+          /*'year': this.year,
+          'semester': this.semester,*/
+          'year': "2018/2019",
+          'semester': 1,
+          /*'studentId': this.studentId*/
+          'studentId': "B17040411"
         }
       }).then((res) => {
         //console.log(res.data.data)
+        console.log(res.data.data.courses)
+        //console.log(JSON.parse(res.data.data.courses))
+        this.test = res.data.data.courses
         let temp = JSON.parse(res.data.data.courses)
         this.heads[0].type = 'success'
         this.heads[0].label = res.data.data.year + '学年'
+        //console.log("year is: ")
+        //console.log(typeof (this.heads[0].label))
         this.heads[1].type = ''
         this.heads[1].label = '第 ' + res.data.data.semester + ' 学期'
+        //console.log("semester is: ")
+        //console.log(typeof (this.heads[1].label))
         //console.log(temp)
-        for(let item in temp){
-          if(temp.hasOwnProperty(item)){
+        for (let item in temp) {
+          if (temp.hasOwnProperty(item)) {
             //需要检查
-            this.coursesNames.push({id:item, mes:temp[item]})
+            this.coursesNames.push({id: item, mes: temp[item]})
           }
         }
         //console.log(this.coursesNames)
@@ -152,30 +174,33 @@ export default {
         //url: 'http://coursesmock.com',
         url: 'http://localhost:8082/scheduleSet/courses/',
         params: {
-          'pageNumber': '1',
+          'pageNumber': '0',
           'pageSize': '10',
         }
       }).then((res) => {
-        console.log(res.data.data)
+        //console.log(res.data.data.courses)
         this.options = res.data.data.courses
-
       })
 
     },
 
     chooseLesson (buttonId) {
       console.log('选课')
-      console.log(buttonId)
+      console.log('选课时的id：', buttonId)
       this.choosing = buttonId
       this.dialogFormVisible = true
     },
 
     confirm () {
-      let id = this.choosing
-      //因为添加了"第X节课"导致数组下标发生变化但是id不变化 所以id = id + Math.floor(id/8)
-      this.coursesNames[id + Math.floor(id / 8)].mes = this.formInline.region
+      let id = parseInt(this.choosing) + Math.ceil(parseInt(this.choosing) / 7 - 1)
+      console.log('确定时的id：', id)
+      //因为添加了"第X节课"导致数组下标发生变化但是id不变化
+      //所以id = parseInt(this.choosing) + Math.ceil(parseInt(this.choosing) / 7 - 1)
+      //this.choosing 被认为是string 所以需要转换为number
+      this.coursesNames[id].mes = this.formInline.region
       this.formInline.region = ''
       this.dialogFormVisible = false
+      //console.log(typeof (JSON.stringify(this.coursesNames)))
     },
 
     reformList () {
@@ -190,18 +215,37 @@ export default {
     },
 
     save () {
-      console.log('保存成功')
+      //console.log('保存成功')
+      var map = {};
+      for(var index in this.coursesNames){
+        if(this.coursesNames[index].id<100){
+          map[this.coursesNames[index].id] = this.coursesNames[index].mes;
+        }
+      }
+      console.log("-----------------test----------------")
+      console.log(this.test)
+      console.log(JSON.stringify(map))
+      console.log(this.test===JSON.stringify(map))
+      console.log(typeof (this.heads[1].label))
+      //console.log(JSON.stringify(this.coursesNames))
       axios({
         method: 'post',
         url: 'http://localhost:8082/scheduleSet/personalSchedule/save',
-        params:{
-          "studentId": "B17040523",
-          "year": this.heads[0].label,
-          "semester": this.heads[1].label,
-          "courses": JSON.stringify(this.coursesNames),
+        data: {
+          'studentId': "B17040411",
+          'year': this.heads[0].label,
+          'semester': parseInt(this.heads[1].label),
+          //string to number
+          "courses": JSON.stringify(map),
         }
       })
       //alert('保存成功！')
+    },
+
+    getParams () {
+      let temp = this.$route.query.row
+      console.log('跳转到show list 了', this.$route.query.row)
+      this.studentId = temp.studentId
     }
 
   },

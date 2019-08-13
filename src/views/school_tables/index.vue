@@ -70,27 +70,31 @@
               <el-table-column
                 label="操作">
                 <template slot-scope="scope">
-                  <router-link :to="{name:'show_school_tables' ,params:{'name':'scope.row.name'}}">
+                  <router-link :to="{
+                  name:'show_school_tables',
+                  params:{name:'scope.row.name'},
+                  query: {name:'scope.row.name'}
+                  }">
                     <el-button
                       size="mini"
                       type="info"
                       @click="handleEdit(scope.$index, scope.row)">查看
                     </el-button>
                   </router-link>
-                  <router-link to="/creat_school_tables">
+                  <!--<router-link to="/creat_school_tables">-->
                     <el-button
                       size="mini"
                       type="success"
                       @click="handleEdit(scope.$index, scope.row)">新建
                     </el-button>
-                  </router-link>
-                  <router-link to="/creat_school_tables">
+                  <!--</router-link>-->
+                  <!--<router-link to="/show_list">-->
                     <el-button
                       size="mini"
                       type="primary"
                       @click="handleEdit(scope.$index, scope.row)">修改
                     </el-button>
-                  </router-link>
+                  <!--</router-link>-->
                   <el-button
                     size="mini"
                     type="danger"
@@ -184,13 +188,13 @@ export default {
         url: 'http://localhost:8082/scheduleSet/name/student/',
         //用params的形式传递参数而不是data 这样使得传递的参数为原本实参类型而不是json
         //Problem solved！
-        params:{
-          "name":this.SName
+        params: {
+          'name': this.SName
         },
       }).then((res) => {
         //console.log("This is res.data.data",res.data.data)
         //console.log(res.data.data)
-        this.allStudents=[]
+        this.allStudents = []
         for (let i = 0; i < res.data.data.length; i++) {
           this.allStudents.push(res.data.data[i])
         }
@@ -215,10 +219,10 @@ export default {
         //url:'http://dataformmock.com',
         url: 'http://localhost:8082/scheduleSet/studentId/student/',
         params: {
-          "studentId": this.SId
+          'studentId': this.SId
         }
       }).then((res) => {
-        this.allStudents=[]
+        this.allStudents = []
         this.allStudents.push(res.data.data)
         this.totalCount = this.allStudents.length
         this.initPagination()
@@ -227,18 +231,17 @@ export default {
       })
     },
 
-
     searchByClass () {
-      console.log("查询的班级："+this.classes)
+      console.log('查询的班级：' + this.classes)
       //向后端传递将要查询的班级名称
       axios({
         method: 'get',
         //url:'http://dataformmock.com',
         url: 'http://localhost:8082/scheduleSet/classId/student/',
-        params:{
-          "classId":this.classes,
-          "pageNumber":0,
-          "pageSize":10
+        params: {
+          'classId': this.classes,
+          'pageNumber': 0,
+          'pageSize': 10
         }
       }).then((res) => {
         console.log(res.data.data)
@@ -253,12 +256,12 @@ export default {
     },
 
     initPagination () {
-        //在此初始化分页的第一页
-        if (this.totalCount < 10) {
-          this.presentStudents = this.allStudents.slice(0, this.totalCount)
-        } else {
-          this.presentStudents = this.allStudents.slice(0, 10)
-        }
+      //在此初始化分页的第一页
+      if (this.totalCount < 10) {
+        this.presentStudents = this.allStudents.slice(0, this.totalCount)
+      } else {
+        this.presentStudents = this.allStudents.slice(0, 10)
+      }
     },
 
     handleCurrentChange (val) {
@@ -273,7 +276,15 @@ export default {
     },
 
     handleEdit (index, row) {
+      console.log('跳转之前')
       console.log(index, row)
+      this.$router.push({
+        path: '/show_list',
+        name: 'show_list',
+        query:{
+          row:row
+        }
+      })
     },
 
     handleDelete (index, row) {

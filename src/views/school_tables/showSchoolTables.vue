@@ -102,14 +102,14 @@ export default {
         this.heads[0].label = res.data.data.year + '学年'
         this.heads[1].type = ''
         this.heads[1].label = '第 ' + res.data.data.semester + ' 学期'
-        console.log(temp)
+        //console.log(temp)
         for(let item in temp){
           if(temp.hasOwnProperty(item)){
             //需要检查
             this.coursesNames.push({id:item, mes:temp[item]})
           }
         }
-        console.log(this.coursesNames)
+        //console.log(this.coursesNames)
         this.coursesNames.unshift({id: 101, mes: '第一节课'})
         this.coursesNames.splice(8, 0, {id: 102, mes: '第二节课'})
         this.coursesNames.splice(16, 0, {id: 103, mes: '第三节课'})
@@ -117,7 +117,7 @@ export default {
         this.coursesNames.splice(32, 0, {id: 105, mes: '第五节课'})
         this.coursesNames.splice(40, 0, {id: 106, mes: '第六节课'})
         this.coursesNames.splice(48, 0, {id: 107, mes: '第七节课'})
-        console.log(this.coursesNames)
+        //console.log(this.coursesNames)
       })
     },
 
