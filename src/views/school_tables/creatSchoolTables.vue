@@ -2,155 +2,73 @@
 <template>
   <div>
     <el-container style="margin-outside: 0">
-      <el-aside width="200px">
-        <side-bar-router></side-bar-router>
-      </el-aside>
+<!--      <el-aside width="200px">-->
+<!--        <side-bar-router></side-bar-router>-->
+<!--      </el-aside>-->
       <el-main>
+        <el-button type="primary" @click="clearTable()">清 空</el-button>
+        <!--<el-tag
+          v-for="item in heads"
+          :key="item.key"
+          :type="item.type"
+          effect="dark">
+          {{ item.label }}
+        </el-tag>-->
         <div id="creatSchoolTable">
           <el-row>
-            <el-col :span="3"><div class="grid-content bg-purple">节次\星期</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">一</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple">二</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">三</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple">四</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">五</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple">六</div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light">日</div></el-col>
+            <el-col :span="3">
+              <div class="grid-content bg-purple">节次\星期</div>
+            </el-col>
+            <el-col :span="3">
+              <div class="grid-content bg-purple-light">一</div>
+            </el-col>
+            <el-col :span="3">
+              <div class="grid-content bg-purple">二</div>
+            </el-col>
+            <el-col :span="3">
+              <div class="grid-content bg-purple-light">三</div>
+            </el-col>
+            <el-col :span="3">
+              <div class="grid-content bg-purple">四</div>
+            </el-col>
+            <el-col :span="3">
+              <div class="grid-content bg-purple-light">五</div>
+            </el-col>
+            <el-col :span="3">
+              <div class="grid-content bg-purple">六</div>
+            </el-col>
+            <el-col :span="3">
+              <div class="grid-content bg-purple-light">日</div>
+            </el-col>
           </el-row>
-          <el-row>
-            <el-col :span="3">
-              <div class="grid-content bg-purple">
-                第一节课
-                <!--<span :value="ttt[0].mes">{{ttt[0].mes}}</span>
-                <span>
-                  <el-button id="button0" icon="el-icon-edit" circle type="primary" size="medium" @click="chooseLesson(ttt[0].id)">
-                </el-button></span>-->
-              </div>
-            </el-col>
-            <el-col :span="3">
+          <el-row :span="3">
+            <el-col :span="3" v-for="item in coursesNames" :key="item.id">
               <div class="grid-content bg-purple-light">
-                <span :value="ttt[1].mes">{{ttt[1].mes}}</span>
-                <el-button id="button1" icon="el-icon-edit" circle type="primary" size="medium" @click="chooseLesson(ttt[1].id)">
+                <span>{{item.mes}}</span>
+                <el-button
+                  icon="el-icon-edit"
+                  circle
+                  type="primary"
+                  size="medium"
+                  @click="chooseLesson(item.id)">
                 </el-button>
               </div>
             </el-col>
-            <el-col :span="3">
-              <div class="grid-content bg-purple">
-                <span :value="ttt[2].mes">{{ttt[2].mes}}</span>
-                <el-button id="button2" icon="el-icon-edit" circle type="primary" size="medium" @click="chooseLesson(ttt[2].id)">
-                </el-button>
-              </div>
-            </el-col>
-            <el-col :span="3">
-              <div class="grid-content bg-purple-light">
-                <span :value="ttt[3].mes">{{ttt[3].mes}}</span>
-                <el-button id="button3" icon="el-icon-edit" circle type="primary" size="medium" @click="chooseLesson(ttt[3].id)">
-                </el-button>
-              </div>
-            </el-col>
-            <el-col :span="3">
-              <div class="grid-content bg-purple">
-                <span :value="ttt[4].mes">{{ttt[4].mes}}</span>
-                <el-button id="button4" icon="el-icon-edit" circle type="primary" size="medium" @click="chooseLesson(ttt[4].id)">
-                </el-button>
-              </div>
-            </el-col>
-            <el-col :span="3">
-              <div class="grid-content bg-purple-light">
-                <span :value="ttt[5].mes">{{ttt[5].mes}}</span>
-                <el-button id="button5" icon="el-icon-edit" circle type="primary" size="medium" @click="chooseLesson(ttt[5].id)">
-                </el-button>
-              </div>
-            </el-col>
-            <el-col :span="3">
-              <div class="grid-content bg-purple">
-                <span :value="ttt[6].mes">{{ttt[6].mes}}</span>
-                <el-button id="button6" icon="el-icon-edit" circle type="primary" size="medium" @click="chooseLesson(ttt[6].id)">
-                </el-button>
-              </div>
-            </el-col>
-            <el-col :span="3">
-              <div class="grid-content bg-purple-light">
-                <span :value="ttt[7].mes">{{ttt[7].mes}}</span>
-                <el-button id="button7" icon="el-icon-edit" circle type="primary" size="medium" @click="chooseLesson(ttt[7].id)">
-                </el-button>
-              </div>
-            </el-col>
-            <!--<el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>-->
           </el-row>
 
-          <!--<el-row>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="3"><div class="grid-content bg-purple-light"></div></el-col>
-          </el-row>-->
+          <el-button type="primary" @click="save()">保存</el-button>
+
           <div>
             <el-dialog title="选择课程" :visible.sync="dialogFormVisible">
               <el-form :inline="true" :model="formInline" class="demo-form-inline">
                 <el-form-item label="课程选择">
                   <el-select v-model="formInline.region" placeholder="下拉选择课程">
-                    <el-option label="英语" value="英语"></el-option>
-                    <el-option label="计算机" value="计算机"></el-option>
+                    <el-option
+                      v-for="item in options"
+                      :key="item.id"
+                      :label="item"
+                      :value="item">
+                    </el-option>
                   </el-select>
                 </el-form-item>
               </el-form>
@@ -169,84 +87,163 @@
 <script>/* eslint-disable */
 import sideBarRouter from '@/components/sideBar/index'
 import ElSelectDropdown from 'element-ui/packages/select/src/select-dropdown'
-import Mock from 'mockjs'
+/*import Mock from 'mockjs'*/
 import axios from 'axios'
 
 export default {
   data () {
-    this.mockTest()//在渲染页面是初始时得到需要展示在前端的后端数据
+    /*this.getParams()*/
+    this.getOptionalCourses()
     return {
-      choosing: 100,
-      coursesNames: [],
-      ttt: [
-        {
-          id: 0,
-          mes: '暂无课程'
-        },
-        {
-          id: 1,
-          mes: '暂无课程'
-        },
-        {
-          id: 2,
-          mes: '暂无课程'
-        },
-        {
-          id: 3,
-          mes: '暂无课程'
-        },
-        {
-          id: 4,
-          mes: '暂无课程'
-        },
-        {
-          id: 5,
-          mes: '暂无课程'
-        },
-        {
-          id: 6,
-          mes: '暂无课程'
-        },
-        {
-          id: 7,
-          mes: '暂无课程'
-        }
+      //页面跳转之后的参数 由他们接收
+      year: '',//学年
+      semester: 0,//学期
+      studentId: '',//id
 
+      st: [],
+      choosing: 100,//为了reform学生课表制作
+      coursesNames: [],//学生课程表
+      dialogFormVisible: false,//弹框的显隐
+      courseName: {mes: '暂无课程'},//存放学生课表
+      //存放题头---学年  学期
+      heads: [
+        {type: '', label: '', key: 0},
+        {type: '', label: '', key: 1},
       ],
-      yyy: 'I changed!',
-      dialogFormVisible: false,
-      courseName: {mes: '暂无课程'},
+      options: [],//存放可选课程
+
       formLabelWidth: '120px',
       formInline: {
         user: '',
         region: ''
-      }
+      },
+
+      test: {},
+
     }
   },
 
   components: {ElSelectDropdown, sideBarRouter},
   methods: {
     mockTest () {
-      axios.get('http://creatschooltablesmock.com').then((res) => {
-        console.log(res.data)
-        /*console.log(res.data[0].Monday);*/
-        this.coursesNames = res.data
+      const map = {}
+      for (let i = 1; i < 50; i++) {
+        map[i] = '暂无课程'
+      }
+      //console.log("Creating new empty map......")
+      //console.log(map)
+      //console.log("courses",this.coursesNames)
+      for (let item in map) {
+        if (map.hasOwnProperty(item)) {
+          //需要检查
+          this.coursesNames.push({id: item, mes: map[item]})
+        }
+      }
+      this.reformList(this.coursesNames)
+      //console.log("courses",this.coursesNames)
+    },
+
+    getOptionalCourses () {
+      //开发用http://chooseablecoursesmock.com
+      //测试用http://localhost:8082/scheduleSet/courses/
+      axios({
+        method: 'get',
+        //url: 'http://coursesmock.com',
+        url: 'http://localhost:8082/scheduleSet/courses/',
+        params: {
+          'pageNumber': '0',
+          'pageSize': '10',
+        }
+      }).then((res) => {
+        //console.log(res.data.data.courses)
+        this.options = res.data.data.courses
+        this.mockTest()
       })
+
     },
 
     chooseLesson (buttonId) {
-      /*console.log('选课')
-      console.log(buttonId)*/
+      if(buttonId>=100){
+        alert("禁止修改侧边栏！")
+        return
+      }
+      console.log('选课')
+      console.log('选课时的id：', buttonId)
       this.choosing = buttonId
       this.dialogFormVisible = true
     },
 
     confirm () {
-      this.ttt[this.choosing].mes = this.formInline.region
+      let id = parseInt(this.choosing) + Math.ceil(parseInt(this.choosing) / 7 - 1)
+      console.log('确定时的id：', id)
+      //因为添加了"第X节课"导致数组下标发生变化但是id不变化
+      //所以id = parseInt(this.choosing) + Math.ceil(parseInt(this.choosing) / 7 - 1)
+      //this.choosing 被认为是string 所以需要转换为number
+      this.coursesNames[id].mes = this.formInline.region
+      this.formInline.region = ''
       this.dialogFormVisible = false
+      //console.log(typeof (JSON.stringify(this.coursesNames)))
     },
-  }
+
+    reformList () {
+      this.coursesNames.unshift({id: 101, mes: '第一节课'})
+      this.coursesNames.splice(8, 0, {id: 102, mes: '第二节课'})
+      this.coursesNames.splice(16, 0, {id: 103, mes: '第三节课'})
+      this.coursesNames.splice(24, 0, {id: 104, mes: '第四节课'})
+      this.coursesNames.splice(32, 0, {id: 105, mes: '第五节课'})
+      this.coursesNames.splice(40, 0, {id: 106, mes: '第六节课'})
+      this.coursesNames.splice(48, 0, {id: 107, mes: '第七节课'})
+      //console.log(this.coursesNames)
+    },
+
+    save () {
+      var str = 'B17040411'
+      //console.log('保存成功')
+      var map = {}
+      for (var index in this.coursesNames) {
+        if (this.coursesNames[index].id < 100) {
+          map[this.coursesNames[index].id] = this.coursesNames[index].mes
+        }
+      }
+      /* console.log("-----------------test----------------")
+       console.log(this.test)
+       console.log(JSON.stringify(map))
+       console.log(this.test===JSON.stringify(map))
+       console.log(typeof (this.heads[1].label))*/
+      //console.log(JSON.stringify(this.coursesNames))
+      axios({
+        method: 'post',
+        url: 'http://localhost:8082/scheduleSet/personalSchedule/save',
+        data: {
+          'studentId': str,
+          'year': this.heads[0].label,
+          'semester': 2,
+          //string to number
+          'courses': JSON.stringify(map),
+        }
+      })
+      //alert('保存成功！')
+    },
+
+    getParams () {
+      let temp = this.$route.query.row
+      console.log('跳转到show list 了', this.$route.query.row)
+      this.studentId = temp.studentId
+    },
+
+    clearTable(){
+      for(let i = 1;i<=56;i++){
+        if(this.coursesNames[i].id<100){
+          this.coursesNames[i].mes = "暂无课程"
+        }
+
+      }
+    }
+
+  },
+
 }
+
 </script>
 
 <style>

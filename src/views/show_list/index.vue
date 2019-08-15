@@ -92,7 +92,7 @@ import axios from 'axios'
 export default {
   data () {
     this.getParams()
-    this.mockTest()//在渲染页面是初始时得到需要展示在前端的后端数据
+    this.init()//在渲染页面是初始时得到需要展示在前端的后端数据
     this.getOptionalCourses()
     return {
       //页面跳转之后的参数 由他们接收
@@ -117,16 +117,13 @@ export default {
         user: '',
         region: ''
       },
-
       test:{},
-
-
     }
   },
 
   components: {ElSelectDropdown, sideBarRouter},
   methods: {
-    mockTest () {
+    init () {
       axios({
         method: 'get',
         //url: 'http://coursesmock.com',
@@ -136,17 +133,16 @@ export default {
           'semester': this.semester,*/
           'year': "2018/2019",
           'semester': 1,
-          /*'studentId': this.studentId*/
-          'studentId': "B17040411"
+          'studentId': this.studentId,
         }
       }).then((res) => {
         //console.log(res.data.data)
-        console.log(res.data.data.courses)
+        //console.log(res.data.data.courses)
         //console.log(JSON.parse(res.data.data.courses))
         this.test = res.data.data.courses
         let temp = JSON.parse(res.data.data.courses)
         this.heads[0].type = 'success'
-        this.heads[0].label = res.data.data.year + '学年'
+        this.heads[0].label = res.data.data.year
         //console.log("year is: ")
         //console.log(typeof (this.heads[0].label))
         this.heads[1].type = ''
@@ -171,7 +167,6 @@ export default {
       //测试用http://localhost:8082/scheduleSet/courses/
       axios({
         method: 'get',
-        //url: 'http://coursesmock.com',
         url: 'http://localhost:8082/scheduleSet/courses/',
         params: {
           'pageNumber': '0',
@@ -181,7 +176,6 @@ export default {
         //console.log(res.data.data.courses)
         this.options = res.data.data.courses
       })
-
     },
 
     chooseLesson (buttonId) {
@@ -216,36 +210,38 @@ export default {
 
     save () {
       //console.log('保存成功')
+      console.log(this.$route.query.row.studentId)
+      console.log((typeof (this.$route.query.row.studentId)))
       var map = {};
       for(var index in this.coursesNames){
         if(this.coursesNames[index].id<100){
           map[this.coursesNames[index].id] = this.coursesNames[index].mes;
         }
       }
-      console.log("-----------------test----------------")
+     /* console.log("-----------------test----------------")
       console.log(this.test)
       console.log(JSON.stringify(map))
       console.log(this.test===JSON.stringify(map))
-      console.log(typeof (this.heads[1].label))
+      console.log(typeof (this.heads[1].label))*/
       //console.log(JSON.stringify(this.coursesNames))
       axios({
         method: 'post',
         url: 'http://localhost:8082/scheduleSet/personalSchedule/save',
         data: {
-          'studentId': "B17040411",
+          'studentId': this.$route.query.row.studentId,
           'year': this.heads[0].label,
-          'semester': parseInt(this.heads[1].label),
-          //string to number
-          "courses": JSON.stringify(map),
+          'semester': '2',
+          'courses': JSON.stringify(map),
         }
       })
-      //alert('保存成功！')
+      alert('保存成功！')
     },
 
     getParams () {
       let temp = this.$route.query.row
-      console.log('跳转到show list 了', this.$route.query.row)
+      //console.log('跳转到show list 了', this.$route.query.row)
       this.studentId = temp.studentId
+      console.log(this.studentId)
     }
 
   },

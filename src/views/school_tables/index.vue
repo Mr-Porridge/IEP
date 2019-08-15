@@ -70,22 +70,16 @@
               <el-table-column
                 label="操作">
                 <template slot-scope="scope">
-                  <router-link :to="{
-                  name:'show_school_tables',
-                  params:{name:'scope.row.name'},
-                  query: {name:'scope.row.name'}
-                  }">
                     <el-button
                       size="mini"
                       type="info"
-                      @click="handleEdit(scope.$index, scope.row)">查看
+                      @click="viewTables(scope.$index, scope.row)">查看
                     </el-button>
-                  </router-link>
                   <!--<router-link to="/creat_school_tables">-->
                     <el-button
                       size="mini"
                       type="success"
-                      @click="handleEdit(scope.$index, scope.row)">新建
+                      @click="createNew(scope.$index, scope.row)">新建
                     </el-button>
                   <!--</router-link>-->
                   <!--<router-link to="/show_list">-->
@@ -95,11 +89,11 @@
                       @click="handleEdit(scope.$index, scope.row)">修改
                     </el-button>
                   <!--</router-link>-->
-                  <el-button
+                  <!--<el-button
                     size="mini"
                     type="danger"
                     @click="handleDelete(scope.$index, scope.row)">删除
-                  </el-button>
+                  </el-button>-->
                 </template>
               </el-table-column>
             </el-table>
@@ -112,7 +106,7 @@
             </div>
           </el-main>
         </el-container>
-        <el-button type="primary" @click="ubc()">测试</el-button>
+        <!--<el-button type="primary" @click="ubc()">测试</el-button>-->
       </el-main>
     </el-container>
   </div>
@@ -275,7 +269,32 @@ export default {
       console.log(this.presentStudents)
     },
 
+    viewTables (index, row) {
+      console.log('跳转之前')
+      console.log(index, row)
+      this.$router.push({
+        path: '/show_school_tables',
+        name: 'show_school_tables',
+        query:{
+          row:row
+        }
+      })
+    },
+
+
     handleEdit (index, row) {
+      console.log('跳转之前')
+      console.log(index, row)
+      this.$router.push({
+        path: '/show_list',
+        name: 'show_list',
+        query:{
+          row:row
+        }
+      })
+    },
+
+    createNew(index, row){
       console.log('跳转之前')
       console.log(index, row)
       this.$router.push({
