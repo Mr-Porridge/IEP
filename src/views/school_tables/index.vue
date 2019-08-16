@@ -298,8 +298,8 @@ export default {
       console.log('跳转之前')
       console.log(index, row)
       this.$router.push({
-        path: '/show_list',
-        name: 'show_list',
+        path: '/creat_school_tables',
+        name: 'creat_school_tables',
         query:{
           row:row
         }

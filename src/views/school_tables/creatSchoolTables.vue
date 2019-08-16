@@ -2,11 +2,40 @@
 <template>
   <div>
     <el-container style="margin-outside: 0">
-<!--      <el-aside width="200px">-->
-<!--        <side-bar-router></side-bar-router>-->
-<!--      </el-aside>-->
+      <el-aside width="200px">
+        <side-bar-router></side-bar-router>
+      </el-aside>
       <el-main>
-        <el-button type="primary" @click="clearTable()">清 空</el-button>
+        <el-button type="text" @click="dialogFormVisible2 = true">选择学年学期</el-button>
+
+        <el-dialog title="选择查询的学年学期" :visible.sync="dialogFormVisible2">
+          <el-form :model="form">
+            <el-form-item label="学年" :label-width="formLabelWidth">
+              <el-select v-model="form.year" clearable placeholder="请选择学年" id="chooseSemester">
+                <el-option
+                  v-for="item in yearOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="学期" :label-width="formLabelWidth">
+              <el-select v-model="form.semester" clearable placeholder="请选择学期" id="chooseYear">
+                <el-option
+                  v-for="item in semesterOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible2 = false">取 消</el-button>
+            <el-button type="primary" @click="confirmYears()">确 定</el-button>
+          </div>
+        </el-dialog>
         <!--<el-tag
           v-for="item in heads"
           :key="item.key"
@@ -56,6 +85,7 @@
             </el-col>
           </el-row>
 
+          <el-button type="success" @click="clearTable()">清 空</el-button>
           <el-button type="primary" @click="save()">保存</el-button>
 
           <div>
@@ -112,14 +142,53 @@ export default {
       ],
       options: [],//存放可选课程
 
-      formLabelWidth: '120px',
       formInline: {
         user: '',
         region: ''
       },
 
       test: {},
-
+      //学年学期选择
+      yearOptions: [
+        {
+          value: '2016/2017',
+          label: '2016/2017学年'
+        },
+        {
+          value: '2017/2018',
+          label: '2017/2018学年'
+        },
+        {
+          value: '2018/2019',
+          label: '2018/2019学年'
+        },
+        {
+          value: '2019/2020',
+          label: '2019/2020学年'
+        },
+      ],
+      semesterOptions: [
+        {
+          value: '1',
+          label: '第一学期'
+        }, {
+          value: '2',
+          label: '第二学期'
+        }, {
+          value: '3',
+          label: '第三学期'
+        }, {
+          value: '4',
+          label: '第四学期'
+        },
+      ],
+      //弹框表单内
+      dialogFormVisible2: false,
+      form: {
+        year:'2018/2019',
+        semester:'1',
+      },
+      formLabelWidth: '120px'
     }
   },
 
@@ -197,7 +266,6 @@ export default {
     },
 
     save () {
-      var str = 'B17040411'
       //console.log('保存成功')
       var map = {}
       for (var index in this.coursesNames) {
@@ -215,20 +283,19 @@ export default {
         method: 'post',
         url: 'http://localhost:8082/scheduleSet/personalSchedule/save',
         data: {
-          'studentId': str,
+          'studentId': this.$route.query.row.studentId,
           'year': this.heads[0].label,
           'semester': 2,
           //string to number
           'courses': JSON.stringify(map),
         }
       })
-      //alert('保存成功！')
+      alert('保存成功！')
     },
 
     getParams () {
       let temp = this.$route.query.row
       console.log('跳转到show list 了', this.$route.query.row)
-      this.studentId = temp.studentId
     },
 
     clearTable(){
@@ -236,8 +303,11 @@ export default {
         if(this.coursesNames[i].id<100){
           this.coursesNames[i].mes = "暂无课程"
         }
-
       }
+    },
+
+    confirmYears() {
+      this.dialogFormVisible = false
     }
 
   },
