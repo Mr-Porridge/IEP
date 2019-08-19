@@ -36,13 +36,13 @@
             <el-button type="primary" @click="confirmYears()">确 定</el-button>
           </div>
         </el-dialog>
-        <!--<el-tag
+        <el-tag
           v-for="item in heads"
           :key="item.key"
           :type="item.type"
           effect="dark">
           {{ item.label }}
-        </el-tag>-->
+        </el-tag>
         <div id="creatSchoolTable">
           <el-row>
             <el-col :span="3">
@@ -137,8 +137,8 @@ export default {
       courseName: {mes: '暂无课程'},//存放学生课表
       //存放题头---学年  学期
       heads: [
-        {type: '', label: '', key: 0},
-        {type: '', label: '', key: 1},
+        {type: '', label: '20xx/20xx 学年', key: 0},
+        {type: 'success', label: '第 x 学期', key: 1},
       ],
       options: [],//存放可选课程
 
@@ -185,8 +185,8 @@ export default {
       //弹框表单内
       dialogFormVisible2: false,
       form: {
-        year:'2018/2019',
-        semester:'1',
+        year: '2018/2019',
+        semester: '1',
       },
       formLabelWidth: '120px'
     }
@@ -232,8 +232,8 @@ export default {
     },
 
     chooseLesson (buttonId) {
-      if(buttonId>=100){
-        alert("禁止修改侧边栏！")
+      if (buttonId >= 100) {
+        alert('禁止修改侧边栏！')
         return
       }
       console.log('选课')
@@ -284,8 +284,8 @@ export default {
         url: 'http://localhost:8082/scheduleSet/personalSchedule/save',
         data: {
           'studentId': this.$route.query.row.studentId,
-          'year': this.heads[0].label,
-          'semester': 2,
+          'year': this.form.year,
+          'semester': this.form.semester,
           //string to number
           'courses': JSON.stringify(map),
         }
@@ -298,16 +298,19 @@ export default {
       console.log('跳转到show list 了', this.$route.query.row)
     },
 
-    clearTable(){
-      for(let i = 1;i<=56;i++){
-        if(this.coursesNames[i].id<100){
-          this.coursesNames[i].mes = "暂无课程"
+    clearTable () {
+      for (let i = 1; i < 56; i++) {
+        if (this.coursesNames[i].id < 100) {
+          this.coursesNames[i].mes = '暂无课程'
         }
       }
     },
 
-    confirmYears() {
-      this.dialogFormVisible = false
+    confirmYears () {
+      this.heads[0].label = this.form.year + ' 学年'
+      this.heads[1].label = '第 ' + this.form.semester + ' 学期'
+
+      this.dialogFormVisible2 = false
     }
 
   },
