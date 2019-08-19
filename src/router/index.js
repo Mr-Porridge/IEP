@@ -6,7 +6,7 @@ import schoolTablesRouter from './school_tables'
 import showSchoolTablesRouter from './school_tables/showSchoolTables'
 import creatSchoolTablesRouter from './school_tables/creatSchoolTables'
 import toBeDevelopedRouter from './to_be_developed'
-
+import testDirRouter from './test_dir'
 
 Vue.use(Router)
 
@@ -21,5 +21,6 @@ export default new Router({
     showSchoolTablesRouter,
     creatSchoolTablesRouter,
     toBeDevelopedRouter,
+    testDirRouter,
   ]
 })

@@ -1,16 +1,15 @@
 <template>
   <div>
+    <el-container>
 
-    <el-container style="margin-outside: 0">
-      <el-aside width="200px">
+      <el-aside>
         <side-bar-router></side-bar-router>
       </el-aside>
-
       <el-main class="el-main">
         <el-container>
-          <el-header style="text-align: center">指标选择</el-header><!--header需要的时候可以添加-->
+          <!--<el-header style="text-align: center">指标选择</el-header>--><!--header需要的时候可以添加-->
           <template>
-            <div class="custom-tree-container">
+            <div class="custom-tree-node">
               <div class="block">
                 <!--<p>使用 render-content</p>-->
                 <!--accordion 为手风琴模式-->
@@ -19,17 +18,15 @@
                   show-checkbox
                   node-key="id"
                   :default-expanded-keys="[2]"
-                  accordion
                   :expand-on-click-node="false"
                   ref="tree"
                   highlight-current
                   :props="defaultProps"
                   :render-content="renderContent">
                 </el-tree>
-
                 <div class="add">
-                  <el-button type="text" @click.prevent>先在下方输入，再在上方需要的地方点击添加</el-button>
-                  <el-form v-model="newChild">
+                  <el-button type="text" @click="addDisplay()">先在下方输入，再在上方需要的地方点击添加</el-button>
+                  <el-form v-model="newChild" v-if="addDisplayFlag">
                     <el-form-item label="选择关联项" :label-width="formLabelWidth" style="left: auto">
                       <el-cascader
                         :options="data"
@@ -42,13 +39,12 @@
                     <el-form-item label="指标描述" :label-width="formLabelWidth">
                       <el-input v-model="newChild.label" placeholder="请输入指标"></el-input>
                     </el-form-item>
-
                     <el-form-item label="指标选项"  :label-width="formLabelWidth">
                       <el-input v-model="newChild.options" placeholder="请用分号间隔"></el-input>
                     </el-form-item>
+                    <el-button type="success" @click="confirmAdd()">确定</el-button>
                   </el-form>
                 </div>
-
                 <el-button type="primary" @click="saveSchoolData">保存</el-button>
                 <el-main>
                   <!--debug用-->
@@ -57,10 +53,9 @@
                   <el-button @click="packageOne">套餐一</el-button><!--通过 node 设置-->
                   <el-button @click="packageTwo">套餐二</el-button><!--通过 key 设置-->
                   <el-button @click="resetChecked">清空所选项</el-button>
-                 <!-- <el-button @click="showList">输出List1&2</el-button>-->
+                  <!-- <el-button @click="showList">输出List1&2</el-button>-->
                 </el-main>
                 <el-main>
-
                 </el-main>
               </div>
             </div>
@@ -70,19 +65,22 @@
     </el-container>
   </div>
 </template>
-
 <script>/* eslint-disable */
 import sideBarRouter from '@/components/sideBar/index'
-import ElSelectDropdown from 'element-ui/packages/select/src/select-dropdown'
-import axios from 'axios'
-/*import Mock from 'mockjs'*/
-let id = 61//这里的id改成表里最大id
 
+import ElSelectDropdown from 'element-ui/packages/select/src/select-dropdown'
+
+import axios from 'axios/index'
+
+/*import Mock from 'mockjs'*/
+let id //这里的id改成表里最大id
+let nodeData
 export default {
   data () {
-    const data=[]
     this.getSchoolData()
     return {
+      timeOut :-1,//setTimeOut函数是一个number返回值
+      dataSaver:{},
       selectedOptions2: [],//默认选择
       //设置别名
       defaultProps: {
@@ -95,84 +93,218 @@ export default {
         children: 'children',
         multiple: true,
         checkStrictly:true,
-
       },
       dialogFormVisible: false,
-      newChild: {
+      formLabelWidth: '120px',
+      newChild:{
         id: '',
         label: '',
         options: '',
         relevanceID: [],
       },
-      formLabelWidth: '120px',
-      data: JSON.parse(JSON.stringify(data))
-    }
-  },
+      data: [],
+      addDisplayFlag:false,
 
+    }
+
+  },
   components: {ElSelectDropdown, sideBarRouter},
   methods: {
-    DFSNode (data_1, data, stack, len) {
+
+    /*迭代查找children对应的结点*/
+    /**
+     * @return {null}
+     */
+    Iteration(children){
+      for(let i=0;i<nodeData.length;++i){
+        if (nodeData[i].id===children){
+          return nodeData.splice(i, 1).pop();
+        }
+      }
+      return null;
+    },
+
+    DFSNode (childrenId) {
       const nodes = []//[{},{},{}]
-      for (let i = 0; i < len; ++i) {
-        if (data.length >= data_1[i] && data[data_1[i] - 1].id === data_1[i]) {
-          const node = data[data_1[i] - 1]
+      for (let i = 0; i < childrenId.length; ++i) {
+        /*查找childrenID对应的结点*/
+        const node=this.Iteration(childrenId[i]);
+        /*如果该childrenID对应的结点不存在，则跳过该结点*/
+        if(node!=null){
           if(node.childrenID.length>0)
-            nodes.push({id: node.id,label: node.describeDataForm,relevanceID:node.relevanceID,children: this.DFSNode(node.childrenID, data, stack, node.childrenID.length)})
+            nodes.push({id: node.id,label: node.describeDataForm,relevanceID:node.relevanceID,children: this.DFSNode(node.childrenID)})
           else
-            nodes.push({id: node.id,label: node.describeDataForm})
+            nodes.push({id: node.id,label: node.describeDataForm,relevanceID:node.relevanceID})
         }
       }
       return nodes;
     },
+    /*
+        oldDFSNode (data_1, data, len) {
+          const nodes = []//[{},{},{}]
+          for (let i = 0; i < len; ++i) {
+            if (data.length >= data_1[i] && data[data_1[i] - 1].id == data_1[i]) {
+              const node = data[data_1[i] - 1]
+              if(node.childrenID.length>0)
+                nodes.push({id: node.id,label: node.describeDataForm,relevanceID:node.relevanceID,children: this.oldDFSNode(node.childrenID, data,  node.childrenID.length)})
+              else
+                nodes.push({id: node.id,label: node.describeDataForm})
+            }
+          }
+          return nodes;
+        },
+    */
+    /**
+     * 从数据库中获取数据
+     * */
     getSchoolData() {
-      const data_1 = [1, 2, 3]
-      const stack = []
-      const url = 'http://localhost:8080/schoolStandardDataForm/toSuperDataFormPage'
+      const nodes=[];
+      const url = 'http://47.110.134.247/group2_b/schoolStandardDataForm/toSuperDataFormPage'
       axios.get(url).then((response) => {
-        this.data = this.DFSNode(data_1, response.data, stack, data_1.length)
+        /*为全部变量赋值，值为后端返回的数据*/
+        nodeData=response.data.data
+        /*设置添加时，新结点的起始id*/
+        id=nodeData[nodeData.length-1].id+1
+        /*
+        * 将childrenID列表转换为childrenNode列表
+        * 每完全转换一个结点，就将该结点从全局nodeData中删除
+        * 直到nodeData中结点全部删除完，则表明数据全部转换完
+        * 新转换完成的树，存放于nodes中
+        * */
+        while (nodeData.length>0){
+          const childrenId = [nodeData[0].id]
+          /*console.log(childrenId)*/
+          nodes.push(this.DFSNode(childrenId).pop())
+          /*console.log(nodeData)*/
+        }
+        this.data=nodes
       })
     },
 
+    /**
+     * 将指标由childrenNode列表转换为childrenID列表，存入数据库中
+     * */
     DFStoArray(){
       const chosenList = this.$refs.tree.getCheckedNodes()
       const dataArray=[]
       for(let i=0;i<chosenList.length;++i){
         const data=chosenList[i]
         const newChild = { id: data.id, describeDataForm: data.label, childrenID:[] ,showType:"",relevanceID:[]}
-        if (data.children) {
+        if (data.children && data.children.length>0) {
+          /*将childrenNode替换为childrenID*/
           for(let j=0;j<data.children.length;++j){
             newChild.childrenID.push(data.children[j].id)
           }
         }
-        data.relevanceID=[]
+        /*如果指标关联不存在，则置为[]*/
+        if(data.relevanceID===undefined || data.relevanceID===null){
+          data.relevanceID=[]
+        }
         newChild.relevanceID=data.relevanceID
         dataArray.push(newChild)
       }
       return dataArray
     },
+    /**
+     * 保存指标
+     * */
     saveSchoolData () {
+      if(this.$refs.tree.getCheckedNodes().length<=0){
+        alert("请确保您的指标不为空");
+        return ;
+      }
       axios({
         method: 'post',
-        url: 'http://localhost:8080/schoolStandardDataForm/createSchoolDataForm',
+        url: 'http://47.110.134.247/group2_b/schoolStandardDataForm/createSchoolDataForm',
         data: this.DFStoArray(),
-      })
-      alert("保存成功！")
+      }).then((response) => {
+        /*成功提醒*/
+        alert('指标创建'+response.data.message);
+      }).catch(function (result) {
+          /*异常提醒*/
+          alert(result.response.data.message)
+        }
+      )
     },
 
     append (data) {
-      if(this.testEmpty()){
-        return
+      this.dataSaver = data
+      let _this = this //两种方法在setTimeOut中调用vue函数
+      const newChild=this.newChild
+      console.log("Hello world!")
+      console.log(data)
+      console.log("Hello world!")
+      this.addDisplayFlag = !this.addDisplayFlag
+
+      function testEmpty() {
+        //判断输入是否为空
+        if (!newChild.options && !newChild.label) {
+          alert("指标描述和选项均不可为空！")
+          //两个都为空时
+          return true//打断判断和添加
+        }
+        if (!newChild.label) {
+          alert("指标描述不可为空！")
+          return true//打断添加
+        }
+        if (!newChild.options) {
+          alert("指标选项不可为空！")
+          return true//打断添加
+        }
+        return false
       }
-      if (!data.children) {
-        this.$set(data, 'children', [])
+
+      /**
+       * 由于关联指标时，value为二维数组，需要取得其中有价值的relevanceID
+       * */
+      function converterRelevanceID(){
+        let relevanceID=newChild.relevanceID
+        newChild.relevanceID=[]
+        relevanceID.forEach(relevance=>{
+          newChild.relevanceID.push(relevance.pop())
+        })
       }
-      data.children.push(this.getData())
-      this.newChild.id=this.newChild.label=this.newChild.options = ''
+
+      function add(){
+        if(testEmpty()){
+          return
+        }
+        if (!data.children) {
+          data.children = []
+          /*this.$set(data, 'children', [])*/
+        }
+        converterRelevanceID()
+        console.log(newChild.relevanceID)
+        data.children.push(_this.getData())
+        newChild.id=newChild.label=newChild.options = ''
+      }
+
+      if(this.addDisplayFlag===true){
+        _this.timeOut = setTimeout(function(){
+          add(data)
+        }, 9000 )
+      }
+      else{
+        clearTimeout(_this.timeOut)
+        add(data)
+      }
+
     },
+  /*  myWindows(data){
+      this.addDisplayFlag = !this.addDisplayFlag
+      while (time!==0){
+        this.append(data)
+      }
+    },
+    mySave(time1){
+      time=time1
+    },*/
+
 
     getData(){
       return  {id: id++, label: this.newChild.label, dataOptions: this.newChild.options.split('；'), children: [], relevanceID: this.newChild.relevanceID}
     },
+
 
     remove (node, data) {
       /*console.log(node.parent)
@@ -192,7 +324,6 @@ export default {
     getCheckedNodes(leafOnly=true) {
       console.log("chosenList is:");
       console.log(this.$refs.tree.getCheckedNodes(leafOnly=true));
-
     },
     getCheckedKeys() {
       //bug：如果其孩子节点都被选择，则父亲节点也会被认为选择
@@ -207,62 +338,51 @@ export default {
         /*label: '三级 1-1-1'*/
       }]);
     },
-
     packageOne() {
       this.$refs.tree.setCheckedKeys([4,7,22,25,26,13,14,16]);
     },
-
     packageTwo() {
       this.$refs.tree.setCheckedKeys([8,18,19,14,15,16]);
     },
-
-
     resetChecked() {
       this.$refs.tree.setCheckedKeys([]);
     },
+    /**
+     * 关联指标
+     * */
     handleChange(value) {
-      console.log(value);
-      this.newChild.relevanceID = value
+      this.newChild.relevanceID=value
     },
 
-    testEmpty() {
-      //判断输入是否为空
-      if (!this.newChild.options && !this.newChild.label) {
-        this.$alert("指标描述和选项均不可为空！")
-        //两个都为空时
-        return true//打断判断和添加
-      }
-      if (!this.newChild.label) {
-        this.$alert("指标描述不可为空！")
-        return true//打断添加
-      }
-      if (!this.newChild.options) {
-        this.$alert("指标选项不可为空！")
-        return true//打断添加
-      }
-      return false
+
+    addDisplay(){
+      this.addDisplayFlag = !this.addDisplayFlag
     },
 
+    confirmAdd(){
+      clearTimeout(this.timeOut)
+      console.log("confirm stage" +this.dataSaver)
+      this.append(this.dataSaver)
+    },
+
+
+    /*<el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>*/
     renderContent(h, { node, data, store }) {
       return (
         <span class="custom-tree-node">
         <span>{node.label}</span>
         <span>
-      <el-button size="mini" type="text" on-click={ () => this.append(data) }>添加</el-button>
-      <el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>删除</el-button>
-      <el-button size="mini" type="text" on-click={ () => this.recover(data) }>恢复</el-button>
+        <el-button size="mini" type="text" on-click={ () => this.append(data) }>添加</el-button>
+        <el-button size="mini" type="text" on-click={ () => this.recover(data) }>刷新</el-button>
       </span>
       </span>);
     }
   }
 }
 </script>
-
 <style>
-  /*
-  去掉整个页面的边框
-
-  *{
+  /*去掉整个页面的边框*/
+ /* *{
     padding: 0;
     margin: 0;
   }*/
@@ -274,29 +394,18 @@ export default {
     justify-content: space-between;
     font-size: 14px; /*字号*/
     padding-right: 8px; /*右侧宽度*/
-  }
 
+  }
   .el-header, .el-footer {
     background-color: #B3C0D1;
     color: #333;
-    margin: 0px;
+    margin: 0;
     text-align: center;
     line-height: 60px;
   }
-
-
   .el-main {
     background-color: #E9EEF3;
     color: #333;
-   /* padding: 0;*/
-
-  }
-
-  .body {
-    margin: 0;
-  }
-
-  .cas{
-
+    /* padding: 0;*/
   }
 </style>
