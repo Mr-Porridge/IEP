@@ -210,8 +210,8 @@ export default {
         params: {
           /*'year': this.year,
           'semester': this.semester,*/
-          'year': '2018/2019',
-          'semester': 1,
+          'year': '2018/2019',//默认值
+          'semester': 1,//默认值
           'studentId': this.studentId,
         }
       }).then((res) => {
@@ -308,8 +308,8 @@ export default {
         url: 'http://localhost:8082/scheduleSet/personalSchedule/save',
         data: {
           'studentId': this.$route.query.row.studentId,
-          'year': this.heads[0].label,
-          'semester': '2',
+          'year': this.form.year,
+          'semester': this.form.semester,
           'courses': JSON.stringify(map),
         }
       })
@@ -326,8 +326,35 @@ export default {
     confirmYears () {
       this.heads[0].label = this.form.year + ' 学年'
       this.heads[1].label = '第 ' + this.form.semester + ' 学期'
-
       this.dialogFormVisible2 = false
+      //根据选择的学年学期更新课表
+      axios({
+        method: 'get',
+        //url: 'http://coursesmock.com',
+        url: 'http://localhost:8082/scheduleSet/personalSchedule/',
+        params: {
+          'year': this.form.year,
+          'semester': this.form.semester,
+          'studentId': this.studentId,
+        }
+      }).then((res) => {
+        this.coursesNames = []
+        this.test = res.data.data.courses
+        let temp = JSON.parse(res.data.data.courses)
+        this.heads[0].type = 'success'
+        this.heads[0].label = res.data.data.year
+        this.heads[1].type = ''
+        this.heads[1].label = '第 ' + res.data.data.semester + ' 学期'
+        for (let item in temp) {
+          if (temp.hasOwnProperty(item)) {
+            //需要检查
+            this.coursesNames.push({id: item, mes: temp[item]})
+          }
+        }
+        this.reformList(this.coursesNames)
+      })
+
+
     }
 
   },
