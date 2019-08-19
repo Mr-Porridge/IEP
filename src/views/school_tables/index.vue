@@ -1,119 +1,124 @@
 <!--2019.07.10开始开发目标制定功能-->
 <template>
   <div>
-    <el-container style="margin-outside: 0">
-      <el-aside width="200px">
-        <side-bar-router></side-bar-router>
-      </el-aside>
+    <el-container style="position: absolute;top:0;bottom:0;left:0;width:100%;" direction="vertical">
+      <el-header style=" height: 82px;   background: #f1f2f7;">
+        <head-bar-router></head-bar-router>
+      </el-header>
+      <el-container >
+        <el-aside style="width: 211px">
+          <side-bar-router></side-bar-router>
+        </el-aside>
+        <el-main class="el-main">
+          <el-container>
+            <el-main>
+              <el-header>学生课表</el-header>
+              <el-container>
+                <div id="searchModal">
+                  <el-form :inline="true">
+                    <el-form-item label="按姓名查询" @submit.native.prevent>
+                      <el-input
+                        placeholder="请输入学生姓名"
+                        v-model="SName"
+                        clearable>
+                      </el-input>
+                    </el-form-item>
 
-      <el-main class="el-main">
-        <el-container>
-          <el-main>
-            <el-header>学生课表</el-header>
-            <el-container>
-              <div id="searchModal">
-                <el-form :inline="true">
-                  <el-form-item label="按姓名查询" @submit.native.prevent>
-                    <el-input
-                      placeholder="请输入学生姓名"
-                      v-model="SName"
-                      clearable>
-                    </el-input>
-                  </el-form-item>
+                    <el-button type="primary" @click="searchByName()">查询</el-button>
 
-                  <el-button type="primary" @click="searchByName()">查询</el-button>
+                    <el-form-item label="按学号查询">
+                      <el-input
+                        placeholder="请输入学生学号"
+                        v-model="SId"
+                        clearable>
+                      </el-input>
+                    </el-form-item>
 
-                  <el-form-item label="按学号查询">
-                    <el-input
-                      placeholder="请输入学生学号"
-                      v-model="SId"
-                      clearable>
-                    </el-input>
-                  </el-form-item>
+                    <el-button type="primary" @click="searchById()">查询</el-button>
 
-                  <el-button type="primary" @click="searchById()">查询</el-button>
-
-                  <el-form-item label="按班级查询">
-                    <el-select v-model="classes" placeholder="班级名称">
-                      <el-option
-                        v-for="item in allClasses"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item>
-                    <el-button type="primary" @click="searchByClass()">查询</el-button>
-                  </el-form-item>
-                </el-form>
-              </div>
-            </el-container>
-            <el-table
-              :data="presentStudents"
-              border
-              style="width: 100%">
-              <el-table-column
-                prop="studentId"
-                label="学号"
-                width="180">
-              </el-table-column>
-              <el-table-column
-                prop="name"
-                label="姓名"
-                width="180">
-              </el-table-column>
-              <el-table-column
-                prop="classId"
-                label="班级">
-              </el-table-column>
-              <el-table-column
-                label="操作">
-                <template slot-scope="scope">
+                    <el-form-item label="按班级查询">
+                      <el-select v-model="classes" placeholder="班级名称">
+                        <el-option
+                          v-for="item in allClasses"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-button type="primary" @click="searchByClass()">查询</el-button>
+                    </el-form-item>
+                  </el-form>
+                </div>
+              </el-container>
+              <el-table
+                :data="presentStudents"
+                border
+                style="width: 100%">
+                <el-table-column
+                  prop="studentId"
+                  label="学号"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="name"
+                  label="姓名"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="classId"
+                  label="班级">
+                </el-table-column>
+                <el-table-column
+                  label="操作">
+                  <template slot-scope="scope">
                     <el-button
                       size="mini"
                       type="info"
                       @click="viewTables(scope.$index, scope.row)">查看
                     </el-button>
-                  <!--<router-link to="/creat_school_tables">-->
+                    <!--<router-link to="/creat_school_tables">-->
                     <el-button
                       size="mini"
                       type="success"
                       @click="createNew(scope.$index, scope.row)">新建
                     </el-button>
-                  <!--</router-link>-->
-                  <!--<router-link to="/show_list">-->
+                    <!--</router-link>-->
+                    <!--<router-link to="/show_list">-->
                     <el-button
                       size="mini"
                       type="primary"
                       @click="handleEdit(scope.$index, scope.row)">修改
                     </el-button>
-                  <!--</router-link>-->
-                  <!--<el-button
-                    size="mini"
-                    type="danger"
-                    @click="handleDelete(scope.$index, scope.row)">删除
-                  </el-button>-->
-                </template>
-              </el-table-column>
-            </el-table>
-            <div class="block" id="pagination">
-              <el-pagination
-                @current-change="handleCurrentChange"
-                layout="prev, pager, next"
-                :total=totalCount>
-              </el-pagination>
-            </div>
-          </el-main>
-        </el-container>
-        <!--<el-button type="primary" @click="ubc()">测试</el-button>-->
-      </el-main>
+                    <!--</router-link>-->
+                    <!--<el-button
+                      size="mini"
+                      type="danger"
+                      @click="handleDelete(scope.$index, scope.row)">删除
+                    </el-button>-->
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="block" id="pagination">
+                <el-pagination
+                  @current-change="handleCurrentChange"
+                  layout="prev, pager, next"
+                  :total=totalCount>
+                </el-pagination>
+              </div>
+            </el-main>
+          </el-container>
+          <!--<el-button type="primary" @click="ubc()">测试</el-button>-->
+        </el-main>
+      </el-container>
     </el-container>
   </div>
 </template>
 
 <script>/* eslint-disable */
 import sideBarRouter from '@/components/sideBar/index'
+import headBarRouter from '@/components/head/index'
 import ElSelectDropdown from 'element-ui/packages/select/src/select-dropdown'
 /*import Mock from 'mockjs'*/
 import axios from 'axios'
@@ -162,7 +167,7 @@ export default {
     }
   },
 
-  components: {ElSelectDropdown, sideBarRouter},
+  components: {ElSelectDropdown, sideBarRouter, headBarRouter},
   methods: {
     mockTest () {
       axios.get('http://dataformmock.com').then((res) => {
@@ -275,12 +280,11 @@ export default {
       this.$router.push({
         path: '/show_school_tables',
         name: 'show_school_tables',
-        query:{
-          row:row
+        query: {
+          row: row
         }
       })
     },
-
 
     handleEdit (index, row) {
       console.log('跳转之前')
@@ -288,20 +292,20 @@ export default {
       this.$router.push({
         path: '/show_list',
         name: 'show_list',
-        query:{
-          row:row
+        query: {
+          row: row
         }
       })
     },
 
-    createNew(index, row){
+    createNew (index, row) {
       console.log('跳转之前')
       console.log(index, row)
       this.$router.push({
         path: '/creat_school_tables',
         name: 'creat_school_tables',
-        query:{
-          row:row
+        query: {
+          row: row
         }
       })
     },

@@ -1,42 +1,6 @@
 <template>
   <div id="app">
     <el-container class="con_section" style="margin-outside: 0">
-      <!-- <el-header class="header_style">
-         <h2 class="title_style">IEP个性化教育</h2>
-         <el-col :span="4" class="userinfo">
-           <el-dropdown trigger="hover">
-             <span class="el-icon-user userinfo-inner" style="margin-right: 15px;font-size: 15px"></span>
-             <el-dropdown-menu slot="dropdown">
-               <el-dropdown-item>设置</el-dropdown-item>
-               <el-dropdown-item>退出登录</el-dropdown-item>
-             </el-dropdown-menu>
-           </el-dropdown>
-           <span>用户</span>
-         </el-col>
-       </el-header> -->
-      <el-header class="header_style" style="height: 80px">
-        <el-col :span="24" class="header">
-          <div class="titles">个性化教育</div>
-          <div class="ipt">
-            <el-input  placeholder="搜索" class="seo"></el-input>
-            <span class="search"><img src="../../assets/btn_search_default.png" alt=""></span>
-          </div>
-          <div class="userinfo">
-            <el-dropdown >
-					<span class="el-dropdown-link userinfo-inner">
-						<img src="../../assets/header_btn_down.png"  alt="">
-						<span class="userName">你好，{{sysUserName}}</span>
-					</span>
-              <!--<el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>我的消息</el-dropdown-item>
-                <el-dropdown-item>设置</el-dropdown-item>
-                <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
-              </el-dropdown-menu>-->
-              <span></span>
-            </el-dropdown>
-          </div>
-        </el-col>
-      </el-header>
       <el-container>
         <el-aside style="width:211px;background-color:#545c64;">
           <el-menu
@@ -102,20 +66,6 @@
             </el-submenu>
           </el-menu>
         </el-aside>
-        <!-- <el-main style="background-color: #E9EEF3;">
-           <el-container>
-             <el-header>{{title_name}}</el-header>
-             <el-main style="background-color: #E9EEF3">
-               <router-view> </router-view>
-             </el-main>
-           </el-container>
-         </el-main>-->
-        <!--     <el-container  style="padding-top: 8px;padding-left: 8px">
-            <el-header>{{title_name}}</el-header>
-            <el-main style="background-color: #E9EEF3">
-              <router-view> </router-view>
-            </el-main>
-          </el-container>-->
         <el-main>
           <el-container>
             <el-header style="text-align: center;background-color: #b3c0d1;height: 60px;font-size: 24px;"><div style="margin-top: 15px">{{title}}</div></el-header>
@@ -135,11 +85,9 @@
     name: "home",
     data() {
       return {
-        title:'IEP',
         open_list:['1','2','2-2','3','3-2','4'],
       }
     },
-    components:{SideBar},
     methods:{
       handleOpen(key, keyPath) {
         console.log(key, keyPath);

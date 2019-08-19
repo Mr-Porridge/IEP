@@ -2,7 +2,7 @@
   <div>
     <el-container>
 
-      <el-aside>
+      <el-aside width="211px">
         <side-bar-router></side-bar-router>
       </el-aside>
       <el-main class="el-main">

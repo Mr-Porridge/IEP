@@ -50,7 +50,7 @@
         <!--default-active="1-4-1"-->
 
         <!--router :default-activate 这两句需要加上 否则不可以在el-menu中使用router参数-->
-        <el-menu
+        <!--<el-menu
           router
           :default-active="$route.path"
           default-active="1-4-1"
@@ -63,19 +63,19 @@
           active-text-color="#ffd04b">
           <el-submenu index="1">
             <template slot="title">
-              <!--<i class="el-icon-location"></i>-->
+              &lt;!&ndash;<i class="el-icon-location"></i>&ndash;&gt;
               <span>基础资料</span>
             </template>
             <el-menu-item-group>
-              <!--<template slot="title">基础资料</template>-->
+              &lt;!&ndash;<template slot="title">基础资料</template>&ndash;&gt;
               <el-menu-item index="1-1" route="/data">评估指标制定</el-menu-item>
-              <!--<el-menu-item index="1-2">功能评量</el-menu-item>
-              <el-menu-item index="1-3">体检记录</el-menu-item>-->
+              &lt;!&ndash;<el-menu-item index="1-2">功能评量</el-menu-item>
+              <el-menu-item index="1-3">体检记录</el-menu-item>&ndash;&gt;
             </el-menu-item-group>
-            <!--          <el-menu-item-group title="目标拟定">
+            &lt;!&ndash;          <el-menu-item-group title="目标拟定">
                         <el-menu-item index="2-1">长短期目标</el-menu-item>
                         <el-menu-item index="2-2">iep会议</el-menu-item>
-                      </el-menu-item-group>-->
+                      </el-menu-item-group>&ndash;&gt;
             <el-submenu index="1-4">
               <template slot="title">课程评量</template>
               <el-menu-item index="1-4-1" route="/school_tables">学生课表查询</el-menu-item>
@@ -84,11 +84,11 @@
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
-              <!--<i class="el-icon-location"></i>-->
+              &lt;!&ndash;<i class="el-icon-location"></i>&ndash;&gt;
               <span>目标拟定</span>
             </template>
             <el-menu-item-group>
-              <!--<template slot="title">基础资料</template>-->
+              &lt;!&ndash;<template slot="title">基础资料</template>&ndash;&gt;
               <el-menu-item index="2-1" route="/to_be_developed">个人目标</el-menu-item>
               <el-menu-item index="2-2" route="/to_be_developed">长短期目标</el-menu-item>
               <el-menu-item index="2-3" route="/to_be_developed">班级目标</el-menu-item>
@@ -97,13 +97,75 @@
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
-              <!--<i class="el-icon-location"></i>-->
+              &lt;!&ndash;<i class="el-icon-location"></i>&ndash;&gt;
               <span>综合评量</span>
             </template>
             <el-menu-item-group>
-              <!--<template slot="title">基础资料</template>-->
+              &lt;!&ndash;<template slot="title">基础资料</template>&ndash;&gt;
               <el-menu-item index="3-1" route="/to_be_developed">短期目标评量</el-menu-item>
               <el-menu-item index="3-2" route="/to_be_developed">定期评估分析</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+        </el-menu>-->
+        <el-menu
+          :default-openeds=this.open_list
+          class="el-menu-vertical-demo"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b"
+          @select="handleSelect"
+          @open="handleOpen"
+          @close="handleClose"
+          style="height: 1170px">
+          <el-submenu index="1">
+            <template slot="title">
+              <span>多元评估</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="1-1">指标选择</el-menu-item>
+              <el-menu-item index="1-2">生态评量</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="2">
+            <template slot="title">
+              <span>课程管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="2-1">课程设置</el-menu-item>
+              <el-submenu index="2-2">
+                <template slot="title"><span>课表制定</span></template>
+                <el-menu-item-group>
+                  <el-menu-item index="2-2-1">学生课表查询</el-menu-item>
+                  <el-menu-item index="2-2-2">学生课表制定</el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+              <el-menu-item index="2-3">IEP会议</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="3">
+            <template slot="title">
+              <span>教学实施</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="3-1">课程评量</el-menu-item>
+              <el-submenu index="3-2">
+                <template slot="title"><span>教学计划</span></template>
+                <el-menu-item-group>
+                  <el-menu-item index="3-2-1">集体学科计划</el-menu-item>
+                  <el-menu-item index="3-2-2">个训学科计划</el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+              <el-menu-item index="3-3">教学主题</el-menu-item>
+              <el-menu-item index="3-4">集体学科教学</el-menu-item>
+              <el-menu-item index="3-5">个训学科教学</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="4">
+            <template slot="title" ><span>系统管理</span> </template>
+            <el-menu-item-group>
+              <el-menu-item index="4-1">学校管理</el-menu-item>
+              <el-menu-item index="4-2">用户管理</el-menu-item>
+              <el-menu-item index="4-3">指标管理</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
         </el-menu>
@@ -114,6 +176,7 @@
 
 <script>/* eslint-disable */
 export default {
+  name:"home",
   data () {
     return {
       open_list: ['1', '2', '3', '1-4'],
@@ -125,11 +188,145 @@ export default {
     },
     handleClose (key, keyPath) {
       console.log(key, keyPath)
-    }
+    },
+    handleSelect(key){
+      switch(key){
+        case '1-1':
+          this.title='指标选择';
+          window.location.href='http://47.110.134.247/group2/#/data';
+          break;
+        case '1-2':
+          this.title='生态评量';
+          this.$router.push('/newcontact');
+          break;
+        case '2-1':
+          this.title='课程设置';
+          window.location.href='http://47.110.134.247/group1/#/CourseManagement';
+          break;
+        case '2-2-1':
+          this.title='学生课表查询';
+          window.location.href='http://47.110.134.247/group2/#/school_tables';
+          break;
+        case '2-2-2':
+          this.title='学生课表制定';
+          window.location.href='http://47.110.134.247/group2/#/creat_school_tables';
+          break;
+        case '2-3':
+          this.title='IEP会议';
+          this.$router.push('/iep_meeting');
+          break;
+        case '3-1':
+          this.title='课程评量';
+          this.$router.push('/course_evaluation');
+          break;
+        case '3-2-1':
+          this.title='集体学科计划';
+          this.$router.push('/coll_disc_pro');
+          break;
+        case '3-2-2':
+          this.title='个训学科计划';
+          this.$router.push('/train_sub_prp');
+          break;
+        case '3-3':
+          this.title='教学主题';
+          this.$router.push('/tea_theme');
+          break;
+        case '3-4':
+          this.title='集体学科教学';
+          this.$router.push('/coll_sub_tea');
+          break;
+        case '3-5':
+          this.title='个训学科教学';
+          this.$router.push('/ind_train_sub');
+          break;
+        case '4-1':
+          this.title='学校管理';
+          window.location.href='http://47.110.134.247/group1/#/list8';
+          break;
+        case '4-2':
+          this.title='用户管理';
+          window.location.href='http://47.110.134.247/group1/#/UserManagement';
+          break;
+        case '4-3':
+          this.title='指标管理';
+          window.location.href='http://47.110.134.247/group1/#/IndicatorManagement';
+          break;
+      }
+    },
   }
 }
 </script>
 
 <style scoped>
+  .header div{
 
+    background: #f1f2f7;
+    height: 80px;
+    line-height: 80px;
+  }
+
+  .header .titles{
+
+    font-size: 20px;
+    font-weight:500;
+    margin-left: 19px;
+  }
+
+  .header .logo  img{
+
+    width: 209px;
+    height: 40px;
+    margin-top: 18px;
+    margin-left: 20px;
+  }
+
+  .header .ipt{
+    margin-left: 500px;
+    position: relative;
+    width: 343px;
+  }
+  .header .userinfo{
+    margin-left: 160px;
+  }
+  .ipt .search {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  }
+  .ipt .search img{
+    width: 18px;
+    height: 18px;
+  }
+
+
+
+  .con_section{
+    position: absolute;
+    top:0px;
+    bottom:0px;
+    left:0px;
+    width:100%;
+  }
+  .header_style{
+    height:60px;
+    line-height: 60px;
+    background-color: #f1f2f7;
+  }
+  .title_style{
+    font-size: 20px;
+    float:left;
+    height:60px;
+    margin: 0 20px;
+    width: 300px;
+  }
+
+  .home_main{
+    padding:10px;
+  }
+  .el-main {
+    background-color: #E9EEF3;
+    color: #333;
+    margin-outside: 0px;
+    margin: 0px;
+  }
 </style>

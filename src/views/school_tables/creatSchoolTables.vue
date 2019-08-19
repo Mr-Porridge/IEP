@@ -1,121 +1,127 @@
 <!--2019.07.10开始开发目标制定功能-->
 <template>
   <div>
-    <el-container style="margin-outside: 0">
-      <el-aside width="200px">
-        <side-bar-router></side-bar-router>
-      </el-aside>
-      <el-main>
-        <el-button type="text" @click="dialogFormVisible2 = true">选择学年学期</el-button>
+    <el-container style="position: absolute;top:0;bottom:0;left:0;width:100%;" direction="vertical">
+      <el-header style=" height: 82px;   background: #f1f2f7;">
+        <head-bar-router></head-bar-router>
+      </el-header>
+      <el-container style="margin-outside: 0">
+        <el-aside width="211px">
+          <side-bar-router></side-bar-router>
+        </el-aside>
+        <el-main>
+          <el-button type="text" @click="dialogFormVisible2 = true">选择学年学期</el-button>
 
-        <el-dialog title="选择查询的学年学期" :visible.sync="dialogFormVisible2">
-          <el-form :model="form">
-            <el-form-item label="学年" :label-width="formLabelWidth">
-              <el-select v-model="form.year" clearable placeholder="请选择学年" id="chooseSemester">
-                <el-option
-                  v-for="item in yearOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="学期" :label-width="formLabelWidth">
-              <el-select v-model="form.semester" clearable placeholder="请选择学期" id="chooseYear">
-                <el-option
-                  v-for="item in semesterOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible2 = false">取 消</el-button>
-            <el-button type="primary" @click="confirmYears()">确 定</el-button>
+          <el-dialog title="选择查询的学年学期" :visible.sync="dialogFormVisible2">
+            <el-form :model="form">
+              <el-form-item label="学年" :label-width="formLabelWidth">
+                <el-select v-model="form.year" clearable placeholder="请选择学年" id="chooseSemester">
+                  <el-option
+                    v-for="item in yearOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="学期" :label-width="formLabelWidth">
+                <el-select v-model="form.semester" clearable placeholder="请选择学期" id="chooseYear">
+                  <el-option
+                    v-for="item in semesterOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible2 = false">取 消</el-button>
+              <el-button type="primary" @click="confirmYears()">确 定</el-button>
+            </div>
+          </el-dialog>
+          <el-tag
+            v-for="item in heads"
+            :key="item.key"
+            :type="item.type"
+            effect="dark">
+            {{ item.label }}
+          </el-tag>
+          <div id="creatSchoolTable">
+            <el-row>
+              <el-col :span="3">
+                <div class="grid-content bg-purple">节次\星期</div>
+              </el-col>
+              <el-col :span="3">
+                <div class="grid-content bg-purple-light">一</div>
+              </el-col>
+              <el-col :span="3">
+                <div class="grid-content bg-purple">二</div>
+              </el-col>
+              <el-col :span="3">
+                <div class="grid-content bg-purple-light">三</div>
+              </el-col>
+              <el-col :span="3">
+                <div class="grid-content bg-purple">四</div>
+              </el-col>
+              <el-col :span="3">
+                <div class="grid-content bg-purple-light">五</div>
+              </el-col>
+              <el-col :span="3">
+                <div class="grid-content bg-purple">六</div>
+              </el-col>
+              <el-col :span="3">
+                <div class="grid-content bg-purple-light">日</div>
+              </el-col>
+            </el-row>
+            <el-row :span="3">
+              <el-col :span="3" v-for="item in coursesNames" :key="item.id">
+                <div class="grid-content bg-purple-light">
+                  <span>{{item.mes}}</span>
+                  <el-button
+                    icon="el-icon-edit"
+                    circle
+                    type="primary"
+                    size="medium"
+                    @click="chooseLesson(item.id)">
+                  </el-button>
+                </div>
+              </el-col>
+            </el-row>
+
+            <el-button type="success" @click="clearTable()">清 空</el-button>
+            <el-button type="primary" @click="save()">保存</el-button>
+
+            <div>
+              <el-dialog title="选择课程" :visible.sync="dialogFormVisible">
+                <el-form :inline="true" :model="formInline" class="demo-form-inline">
+                  <el-form-item label="课程选择">
+                    <el-select v-model="formInline.region" placeholder="下拉选择课程">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.id"
+                        :label="item"
+                        :value="item">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                  <el-button @click="dialogFormVisible = false">取 消</el-button>
+                  <el-button type="primary" @click="confirm">确 定</el-button>
+                </div>
+              </el-dialog>
+            </div>
           </div>
-        </el-dialog>
-        <el-tag
-          v-for="item in heads"
-          :key="item.key"
-          :type="item.type"
-          effect="dark">
-          {{ item.label }}
-        </el-tag>
-        <div id="creatSchoolTable">
-          <el-row>
-            <el-col :span="3">
-              <div class="grid-content bg-purple">节次\星期</div>
-            </el-col>
-            <el-col :span="3">
-              <div class="grid-content bg-purple-light">一</div>
-            </el-col>
-            <el-col :span="3">
-              <div class="grid-content bg-purple">二</div>
-            </el-col>
-            <el-col :span="3">
-              <div class="grid-content bg-purple-light">三</div>
-            </el-col>
-            <el-col :span="3">
-              <div class="grid-content bg-purple">四</div>
-            </el-col>
-            <el-col :span="3">
-              <div class="grid-content bg-purple-light">五</div>
-            </el-col>
-            <el-col :span="3">
-              <div class="grid-content bg-purple">六</div>
-            </el-col>
-            <el-col :span="3">
-              <div class="grid-content bg-purple-light">日</div>
-            </el-col>
-          </el-row>
-          <el-row :span="3">
-            <el-col :span="3" v-for="item in coursesNames" :key="item.id">
-              <div class="grid-content bg-purple-light">
-                <span>{{item.mes}}</span>
-                <el-button
-                  icon="el-icon-edit"
-                  circle
-                  type="primary"
-                  size="medium"
-                  @click="chooseLesson(item.id)">
-                </el-button>
-              </div>
-            </el-col>
-          </el-row>
-
-          <el-button type="success" @click="clearTable()">清 空</el-button>
-          <el-button type="primary" @click="save()">保存</el-button>
-
-          <div>
-            <el-dialog title="选择课程" :visible.sync="dialogFormVisible">
-              <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                <el-form-item label="课程选择">
-                  <el-select v-model="formInline.region" placeholder="下拉选择课程">
-                    <el-option
-                      v-for="item in options"
-                      :key="item.id"
-                      :label="item"
-                      :value="item">
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-              </el-form>
-              <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="confirm">确 定</el-button>
-              </div>
-            </el-dialog>
-          </div>
-        </div>
-      </el-main>
+        </el-main>
+      </el-container>
     </el-container>
   </div>
 </template>
 
 <script>/* eslint-disable */
 import sideBarRouter from '@/components/sideBar/index'
+import headBarRouter from '@/components/head/index'
 import ElSelectDropdown from 'element-ui/packages/select/src/select-dropdown'
 /*import Mock from 'mockjs'*/
 import axios from 'axios'
@@ -192,7 +198,7 @@ export default {
     }
   },
 
-  components: {ElSelectDropdown, sideBarRouter},
+  components: {ElSelectDropdown, sideBarRouter, headBarRouter},
   methods: {
     mockTest () {
       const map = {}
