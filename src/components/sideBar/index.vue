@@ -108,70 +108,127 @@
           </el-submenu>
         </el-menu>-->
         <el-menu
-          :default-openeds=this.open_list
+          :default-active=this.currentPage
           class="el-menu-vertical-demo"
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b"
+          :unique-opened=openMethod
           @select="handleSelect"
           @open="handleOpen"
           @close="handleClose"
           style="height: 1170px">
           <el-submenu index="1">
             <template slot="title">
-              <span>多元评估</span>
+              <i class="el-icon-magic-stick"></i>
+              <span class="levelOne">多元评估</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="1-1">指标选择</el-menu-item>
-              <el-menu-item index="1-2">生态评量</el-menu-item>
+              <el-menu-item index="1-1" >
+                <i class="el-icon-check userIcon"></i>
+                <span class="levelTwo">指标选择</span>
+              </el-menu-item>
+              <el-menu-item index="1-2" >
+                <i class="el-icon-star-off userIcon"></i>
+                <span class="levelTwo">生态评量</span>
+              </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
-              <span>课程管理</span>
+              <i class="el-icon-reading"></i>
+              <span class="levelOne">课程管理</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="2-1">课程设置</el-menu-item>
+              <el-menu-item index="2-1">
+                <i class="el-icon-document userIcon"></i>
+                <span class="levelTwo">课程设置</span>
+              </el-menu-item>
               <el-submenu index="2-2">
-                <template slot="title"><span>课表制定</span></template>
+                <template slot="title">
+                  <i class="el-icon-edit userIcon"></i>
+                  <span class="levelTwo">课表制定</span>
+                </template>
                 <el-menu-item-group>
-                  <el-menu-item index="2-2-1">学生课表查询</el-menu-item>
-                  <el-menu-item index="2-2-2">学生课表制定</el-menu-item>
+                  <el-menu-item index="2-2-1"><span class="levelThree">学生课表查询</span></el-menu-item>
+                  <el-menu-item index="2-2-2"><span class="levelThree">学生课表制定</span></el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
-              <el-menu-item index="2-3">IEP会议</el-menu-item>
+              <el-menu-item index="2-3">
+                <i class="el-icon-chat-line-round userIcon"></i>
+                <span class="levelTwo">IEP会议</span>
+              </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
-              <span>教学实施</span>
+              <i class="el-icon-notebook-1"></i>
+              <span class="levelOne">教学实施</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="3-1">课程评量</el-menu-item>
+              <el-menu-item index="3-1">
+                <i class="el-icon-s-claim userIcon"></i>
+                <span class="levelTwo">课程评量</span>
+              </el-menu-item>
               <el-submenu index="3-2">
-                <template slot="title"><span>教学计划</span></template>
+                <template slot="title">
+                  <i class="el-icon-s-order userIcon"></i>
+                  <span class="levelTwo">教学计划</span>
+                </template>
                 <el-menu-item-group>
-                  <el-menu-item index="3-2-1">集体学科计划</el-menu-item>
-                  <el-menu-item index="3-2-2">个训学科计划</el-menu-item>
+                  <el-menu-item index="3-2-1">
+                    <i class="el-icon-s-grid userIcon"></i>
+                    <span class="levelThree">集体学科计划</span>
+                  </el-menu-item>
+                  <el-menu-item index="3-2-2">
+                    <i class="el-icon-menu userIcon"></i>
+                    <span class="levelThree">个训学科计划</span>
+                  </el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
-              <el-menu-item index="3-3">教学主题</el-menu-item>
-              <el-menu-item index="3-4">集体学科教学</el-menu-item>
-              <el-menu-item index="3-5">个训学科教学</el-menu-item>
+              <el-menu-item index="3-3">
+                <i class="el-icon-s-flag userIcon"></i>
+                <span class="levelTwo">教学主题</span>
+              </el-menu-item>
+              <el-menu-item index="3-4">
+                <i class="el-icon-document-copy userIcon"></i>
+                <span class="levelTwo">集体学科教学</span>
+              </el-menu-item>
+              <el-menu-item index="3-5">
+                <i class="el-icon-document userIcon"></i>
+                <span class="levelTwo">个训学科教学</span>
+              </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="4">
-            <template slot="title" ><span>系统管理</span> </template>
+            <template slot="title">
+              <i class="el-icon-setting"></i>
+              <span class="levelOne">系统管理</span>
+            </template>
             <el-menu-item-group>
-              <el-menu-item index="4-1">学校管理</el-menu-item>
-              <el-menu-item index="4-2">用户管理</el-menu-item>
-              <el-menu-item index="4-3">指标管理</el-menu-item>
+              <el-menu-item index="4-1">
+                <i class="el-icon-user-solid userIcon"></i>
+                <span class="levelTwo">学校管理</span>
+              </el-menu-item>
+              <el-menu-item index="4-2">
+                <i class="el-icon-user userIcon"></i>
+                <span class="levelTwo">用户管理</span>
+              </el-menu-item>
+              <el-menu-item index="4-3">
+                <i class="el-icon-s-check userIcon"></i>
+                <span class="levelTwo">指标管理</span>
+              </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
         </el-menu>
       </el-col>
     </el-row>
+    <!--<keep-alive>
+      <router-view></router-view>
+    </keep-alive>-->
+
   </div>
+
 </template>
 
 <script>/* eslint-disable */
@@ -179,7 +236,8 @@ export default {
   name:"home",
   data () {
     return {
-      open_list: ['1', '2', '3', '1-4'],
+      currentPage : '1-1',
+      openMethod : true
     }
   },
   methods: {
@@ -193,51 +251,65 @@ export default {
       switch(key){
         case '1-1':
           this.title='指标选择';
-          window.location.href='http://47.110.134.247/group2/#/data';
+          this.currentPage = key
+          window.location.href='http://localhost:8083/#/data';
+          //window.location.href='http://47.110.134.247/group2/#/data';
           break;
         case '1-2':
           this.title='生态评量';
-          this.$router.push('/newcontact');
+          window.location.href='http://47.110.134.247/group3/#/newcontact';
+          //this.$router.push('/newcontact');
           break;
         case '2-1':
           this.title='课程设置';
+          this.currentPage = key;
           window.location.href='http://47.110.134.247/group1/#/CourseManagement';
           break;
         case '2-2-1':
           this.title='学生课表查询';
-          window.location.href='http://47.110.134.247/group2/#/school_tables';
+          this.currentPage = key
+          window.location.href='http://localhost:8083/#/school_tables';
+          //window.location.href='http://47.110.134.247/group2/#/school_tables';
           break;
         case '2-2-2':
           this.title='学生课表制定';
-          window.location.href='http://47.110.134.247/group2/#/creat_school_tables';
+          window.location.href='http://localhost:8083/#/creat_school_tables';
+          //window.location.href='http://47.110.134.247/group2/#/creat_school_tables';
           break;
         case '2-3':
           this.title='IEP会议';
-          this.$router.push('/iep_meeting');
+          window.location.href='http://47.110.134.247/group3/#/iep_meeting';
+          //this.$router.push('/iep_meeting');
           break;
         case '3-1':
           this.title='课程评量';
-          this.$router.push('/course_evaluation');
+          window.location.href='http://47.110.134.247/group3/#/course_evaluation';
+          //this.$router.push('/course_evaluation');
           break;
         case '3-2-1':
           this.title='集体学科计划';
-          this.$router.push('/coll_disc_pro');
+          window.location.href='http://47.110.134.247/group3/#/coll_disc_pro';
+          //this.$router.push('/coll_disc_pro');
           break;
         case '3-2-2':
           this.title='个训学科计划';
-          this.$router.push('/train_sub_prp');
+          window.location.href='http://47.110.134.247/group3/#/train_sub_prp';
+          //this.$router.push('/train_sub_prp');
           break;
         case '3-3':
           this.title='教学主题';
-          this.$router.push('/tea_theme');
+          window.location.href='http://47.110.134.247/group3/#/tea_theme';
+          //this.$router.push('/tea_theme');
           break;
         case '3-4':
           this.title='集体学科教学';
-          this.$router.push('/coll_sub_tea');
+          window.location.href='http://47.110.134.247/group3/#/coll_sub_tea';
+          ///this.$router.push('/coll_sub_tea');
           break;
         case '3-5':
           this.title='个训学科教学';
-          this.$router.push('/ind_train_sub');
+          window.location.href='http://47.110.134.247/group3/#/ind_train_sub';
+          //this.$router.push('/ind_train_sub');
           break;
         case '4-1':
           this.title='学校管理';
@@ -298,6 +370,22 @@ export default {
     height: 18px;
   }
 
+  .levelOne{
+    color: 	#FFFFFF;
+  }
+
+  .levelTwo{
+    /*color: #FFD04B #F0E68C  #FFD700      #AFEEEE*/
+    color:  #FFFFFF;
+  }
+
+  .levelThree{
+    color: #F0E68C;
+  }
+
+  .userIcon{
+    margin-left: 20px;
+  }
 
 
   .con_section{

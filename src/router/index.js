@@ -12,8 +12,8 @@ Vue.use(Router)
 
 /* eslint-disable */
 export default new Router({
-  /*mode: 'history', /!* 这一句不可以少 *!/
-  base:'./var/www/html',*/
+  /*mode: 'history', /!* 这一句不可以少 *!/*/
+  base:'/group2/',
   routes: [
     basicDataRouter,
     showListRouter,

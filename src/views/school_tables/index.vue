@@ -3,7 +3,7 @@
   <div>
     <el-container style="position: absolute;top:0;bottom:0;left:0;width:100%;" direction="vertical">
       <el-header style=" height: 82px;   background: #f1f2f7;">
-        <head-bar-router></head-bar-router>
+       <!-- <head-bar-router></head-bar-router>-->
       </el-header>
       <el-container >
         <el-aside style="width: 211px">
@@ -24,7 +24,7 @@
                       </el-input>
                     </el-form-item>
 
-                    <el-button type="primary" @click="searchByName()">查询</el-button>
+                    <el-button type="primary" icon="el-icon-search" @click="searchByName()">查询</el-button>
 
                     <el-form-item label="按学号查询">
                       <el-input
@@ -34,7 +34,7 @@
                       </el-input>
                     </el-form-item>
 
-                    <el-button type="primary" @click="searchById()">查询</el-button>
+                    <el-button type="primary" icon="el-icon-search" @click="searchById()">查询</el-button>
 
                     <el-form-item label="按班级查询">
                       <el-select v-model="classes" placeholder="班级名称">
@@ -47,7 +47,7 @@
                       </el-select>
                     </el-form-item>
                     <el-form-item>
-                      <el-button type="primary" @click="searchByClass()">查询</el-button>
+                      <el-button type="primary" icon="el-icon-search" @click="searchByClass()">查询</el-button>
                     </el-form-item>
                   </el-form>
                 </div>
@@ -76,12 +76,14 @@
                     <el-button
                       size="mini"
                       type="info"
+                      icon="el-icon-s-promotion"
                       @click="viewTables(scope.$index, scope.row)">查看
                     </el-button>
                     <!--<router-link to="/creat_school_tables">-->
                     <el-button
                       size="mini"
                       type="success"
+                      icon="el-icon-plus"
                       @click="createNew(scope.$index, scope.row)">新建
                     </el-button>
                     <!--</router-link>-->
@@ -89,6 +91,7 @@
                     <el-button
                       size="mini"
                       type="primary"
+                      icon="el-icon-edit"
                       @click="handleEdit(scope.$index, scope.row)">修改
                     </el-button>
                     <!--</router-link>-->
@@ -109,7 +112,7 @@
               </div>
             </el-main>
           </el-container>
-          <!--<el-button type="primary" @click="ubc()">测试</el-button>-->
+          <el-button type="primary" @click="mySession()">测试</el-button>
         </el-main>
       </el-container>
     </el-container>
@@ -184,7 +187,8 @@ export default {
       axios({
         method: 'get',
         //url:'http://dataformmock.com',
-        url: 'http://localhost:8082/scheduleSet/name/student/',
+        // url: 'http://localhost:8082/scheduleSet/name/student/',
+        url: 'http://47.110.134.247/group2_b/scheduleSet/name/student/',
         //用params的形式传递参数而不是data 这样使得传递的参数为原本实参类型而不是json
         //Problem solved！
         params: {
@@ -216,7 +220,8 @@ export default {
       axios({
         method: 'get',
         //url:'http://dataformmock.com',
-        url: 'http://localhost:8082/scheduleSet/studentId/student/',
+        // url: 'http://localhost:8082/scheduleSet/studentId/student/',
+        url: 'http://47.110.134.247/group2_b/scheduleSet/studentId/student/',
         params: {
           'studentId': this.SId
         }
@@ -236,7 +241,8 @@ export default {
       axios({
         method: 'get',
         //url:'http://dataformmock.com',
-        url: 'http://localhost:8082/scheduleSet/classId/student/',
+        // url: 'http://localhost:8082/scheduleSet/classId/student/',
+        url: 'http://47.110.134.247/group2_b/scheduleSet/classId/student/',
         params: {
           'classId': this.classes,
           'pageNumber': 0,
@@ -313,6 +319,19 @@ export default {
     handleDelete (index, row) {
       console.log(index, row)
     },
+
+    mySession(){
+      var sessionTest = {}
+      sessionTest.id = "Session里的id";
+      sessionTest.name = "Session里的name";
+      window.sessionStorage["searchIndex"] = JSON.stringify(sessionTest);
+
+      this.$router.push({
+        path: '/test_dir',
+        name: 'test_dir',
+      })
+    }
+
 
   }
 }

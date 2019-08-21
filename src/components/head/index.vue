@@ -9,7 +9,7 @@
         <el-dropdown >
 					<span class="el-dropdown-link userinfo-inner">
 						<img src="../../assets/header_btn_down.png"  alt="">
-						<span class="userName">你好，sysUserName</span>
+						<span class="userName">你好，User</span>
 					</span>
           <!--<el-dropdown-menu slot="dropdown">
             <el-dropdown-item>我的消息</el-dropdown-item>

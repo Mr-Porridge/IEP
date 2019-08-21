@@ -55,34 +55,34 @@
             <div id="creatSchoolTable">
               <el-row>
                 <el-col :span="3">
-                  <div class="grid-content bg-purple">节次\星期</div>
+                  <div class="grid-content bg-purple-light">节次\星期</div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="grid-content bg-purple-light">一</div>
+                  <div class="grid-content bg-purple">一</div>
                 </el-col>
                 <el-col :span="3">
                   <div class="grid-content bg-purple">二</div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="grid-content bg-purple-light">三</div>
+                  <div class="grid-content bg-purple">三</div>
                 </el-col>
                 <el-col :span="3">
                   <div class="grid-content bg-purple">四</div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="grid-content bg-purple-light">五</div>
+                  <div class="grid-content bg-purple">五</div>
                 </el-col>
                 <el-col :span="3">
                   <div class="grid-content bg-purple">六</div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="grid-content bg-purple-light">日</div>
+                  <div class="grid-content bg-purple">日</div>
                 </el-col>
               </el-row>
               <el-row :span="3">
                 <el-col :span="3" v-for="item in coursesNames" :key="item.id">
-                  <div class="grid-content bg-purple-light">
-                    <span>{{item.mes}}</span>
+                  <div class="grid-content bg-purple-light" :style="randomRgb(item.id)">
+                    <span class="courseName">{{item.mes}}</span>
                   </div>
                 </el-col>
               </el-row>
@@ -158,8 +158,16 @@ export default {
         year: '2018/2019',
         semester: '1',
       },
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      //随机颜色课表
+      colorMap:['#FFB6C1', '#6495ED', '#FFA500', '#FF7F50',],
+
+      colorMap2:['#C7EDE9','#AFD7ED','#5CA7BA','#FF425D','#93E0FF'],
+
+      colorMap3:['#F4E8C1','#A0C1B8','#B7DAE0','#E6E6FA',
+        '#FFD8EB','#87CEFA','#FFE4E1'],
     }
+
   },
 
   components: {ElSelectDropdown, sideBarRouter, headBarRouter},
@@ -168,7 +176,8 @@ export default {
       axios({
         method: 'get',
         //url: 'http://coursesmock.com',
-        url: 'http://localhost:8082/scheduleSet/personalSchedule/',
+        // url: 'http://localhost:8082/scheduleSet/personalSchedule/',
+        url: 'http://47.110.134.247/group2_b/scheduleSet/personalSchedule/',
         params: {
           /*'year': this.form.year,
           'semester': this.form.semester,*/
@@ -207,13 +216,13 @@ export default {
       this.studentId = temp.studentId
       console.log(this.form)
     },
-
     searchTables () {
       this.dialogFormVisible = false
       axios({
         method: 'get',
         //url: 'http://coursesmock.com',
-        url: 'http://localhost:8082/scheduleSet/personalSchedule/',
+        // url: 'http://localhost:8082/scheduleSet/personalSchedule/',
+        url: 'http://47.110.134.247/group2_b/scheduleSet/personalSchedule/',
         params: {
           /*'year': this.form.year,
           'semester': this.form.semester,*/
@@ -246,7 +255,26 @@ export default {
         this.coursesNames.splice(48, 0, {id: 107, mes: '第七节课'})
         //console.log(this.coursesNames)
       })
-    }
+    },
+    randomRgb(id){
+      if(id<100){
+        //左右相邻不同色
+        this.coursesNames[id].color = -1
+        this.coursesNames[id].color = Math.floor((Math.random()*7)+1) - 1;
+        while(this.coursesNames[id].color===this.coursesNames[id-1].color){
+          this.coursesNames[id].color = ((this.coursesNames[id].color)%7) + 1
+        }
+        //console.log(this.coursesNames[id].color)
+        return {
+          background: this.colorMap3[this.coursesNames[id].color]
+        }
+      }
+      else{
+        return {
+          background: '#d3dce6'
+        }
+      }
+    },
   }
 }
 </script>
@@ -261,7 +289,7 @@ export default {
   .el-header, .el-footer {
     background-color: #B3C0D1;
     color: #333;
-    margin: 0px;
+    margin: 0;
     text-align: center;
     line-height: 60px;
   }
@@ -299,4 +327,10 @@ export default {
     padding: 10px 0;
     background-color: #f9fafc;
   }
+
+  .courseName {
+
+  }
+
+
 </style>

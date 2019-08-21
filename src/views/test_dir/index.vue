@@ -5,13 +5,16 @@
       <el-aside width="200px">
         <side-bar-router></side-bar-router>
       </el-aside>
+      <el-main>
+        <el-button type="primary" @click="checkExisted()">测试</el-button>
+      </el-main>
     </el-container>
   </div>
 </template>
 
 <script>/* eslint-disable */
 import sideBarRouter from '@/components/sideBar/index'
-/*import Mock from 'mockjs'*/
+import Mock from 'mockjs'
 import axios from 'axios'
 
 export default {
@@ -22,7 +25,28 @@ export default {
 
   components: {sideBarRouter},
   methods: {
+    getSession(){
+      if (window.sessionStorage["searchIndex"]){
+        console.log(JSON.parse(window.sessionStorage.getItem("searchIndex")))
+      }
+    },
 
+
+    /**
+     * 检查学校id 以区分新建和修改
+     * */
+    checkExisted () {
+      console.log("I am in ")
+      axios({
+        method: 'get',
+        url: 'http://schoolmock.com',
+        data: {
+          'schoolId': 1,
+        }
+      }).then((res) => {
+        console.log(res)
+      })
+    },
   },
 
 }

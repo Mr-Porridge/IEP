@@ -1,9 +1,9 @@
 // 将所有的mock文件引入
 require('@/mock/schooltablesmock')
-//require('@/mock/coursesmock')
+require('@/mock/coursesmock')
 require('@/mock/creatschooltablesmock')
 require('@/mock/chooseablecoursesmock')
-
+require('@/mock/checkexisted')
 
 // 在这里可以做一些通用的配置
 const Mock = require("mockjs")

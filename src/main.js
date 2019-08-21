@@ -6,23 +6,24 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
-import VueAxios from 'vue-axios'
 import Mock from './mock'
-
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
-require('./mock')
+//require('./mock')
+//放服务器须注释上一行！！
 
-Vue.prototype.axios=axios;
-Vue.use(VueAxios, axios);
+axios.defaults.withCredentials = true
+Vue.prototype.axios = axios
+
+
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: {App},
   template: '<App/>'
 })

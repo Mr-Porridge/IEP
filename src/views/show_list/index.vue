@@ -206,7 +206,8 @@ export default {
       axios({
         method: 'get',
         //url: 'http://coursesmock.com',
-        url: 'http://localhost:8082/scheduleSet/personalSchedule/',
+        //url: 'http://localhost:8082/scheduleSet/personalSchedule/',
+        url: 'http://47.110.134.247/group2_b/scheduleSet/personalSchedule/',
         params: {
           /*'year': this.year,
           'semester': this.semester,*/
@@ -246,7 +247,8 @@ export default {
       //测试用http://localhost:8082/scheduleSet/courses/
       axios({
         method: 'get',
-        url: 'http://localhost:8082/scheduleSet/courses/',
+        //url: 'http://localhost:8082/scheduleSet/courses/',
+        url: 'http://47.110.134.247/group2_b/scheduleSet/courses/',
         params: {
           'pageNumber': '0',
           'pageSize': '10',
@@ -305,7 +307,8 @@ export default {
       //console.log(JSON.stringify(this.coursesNames))
       axios({
         method: 'post',
-        url: 'http://localhost:8082/scheduleSet/personalSchedule/save',
+        //url: 'http://localhost:8082/scheduleSet/personalSchedule/save',
+        url: 'http://47.110.134.247/group2_b/scheduleSet/personalSchedule/save',
         data: {
           'studentId': this.$route.query.row.studentId,
           'year': this.form.year,
@@ -330,8 +333,8 @@ export default {
       //根据选择的学年学期更新课表
       axios({
         method: 'get',
-        //url: 'http://coursesmock.com',
-        url: 'http://localhost:8082/scheduleSet/personalSchedule/',
+        //url: 'http://localhost:8082/scheduleSet/personalSchedule/',
+        url: 'http://47.110.134.247/group2_b/scheduleSet/personalSchedule/',
         params: {
           'year': this.form.year,
           'semester': this.form.semester,
