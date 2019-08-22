@@ -4,7 +4,7 @@ require('@/mock/coursesmock')
 require('@/mock/creatschooltablesmock')
 require('@/mock/chooseablecoursesmock')
 require('@/mock/checkexisted')
-
+require('@/mock/datamock')
 // 在这里可以做一些通用的配置
 const Mock = require("mockjs")
 

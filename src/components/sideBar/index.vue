@@ -144,7 +144,12 @@
                 <i class="el-icon-document userIcon"></i>
                 <span class="levelTwo">课程设置</span>
               </el-menu-item>
-              <el-submenu index="2-2">
+              <el-menu-item index="2-2">
+                <i class="el-icon-edit userIcon"></i>
+                <span class="levelTwo">学生课表</span>
+              </el-menu-item>
+
+             <!-- <el-submenu index="2-2">
                 <template slot="title">
                   <i class="el-icon-edit userIcon"></i>
                   <span class="levelTwo">课表制定</span>
@@ -153,7 +158,7 @@
                   <el-menu-item index="2-2-1"><span class="levelThree">学生课表查询</span></el-menu-item>
                   <el-menu-item index="2-2-2"><span class="levelThree">学生课表制定</span></el-menu-item>
                 </el-menu-item-group>
-              </el-submenu>
+              </el-submenu>-->
               <el-menu-item index="2-3">
                 <i class="el-icon-chat-line-round userIcon"></i>
                 <span class="levelTwo">IEP会议</span>
@@ -226,7 +231,6 @@
     <!--<keep-alive>
       <router-view></router-view>
     </keep-alive>-->
-
   </div>
 
 </template>
@@ -265,17 +269,17 @@ export default {
           this.currentPage = key;
           window.location.href='http://47.110.134.247/group1/#/CourseManagement';
           break;
-        case '2-2-1':
+        case '2-2':
           this.title='学生课表查询';
           this.currentPage = key
           window.location.href='http://localhost:8083/#/school_tables';
           //window.location.href='http://47.110.134.247/group2/#/school_tables';
           break;
-        case '2-2-2':
+        /*case '2-2-2':
           this.title='学生课表制定';
           window.location.href='http://localhost:8083/#/creat_school_tables';
           //window.location.href='http://47.110.134.247/group2/#/creat_school_tables';
-          break;
+          break;*/
         case '2-3':
           this.title='IEP会议';
           window.location.href='http://47.110.134.247/group3/#/iep_meeting';
@@ -380,7 +384,7 @@ export default {
   }
 
   .levelThree{
-    color: #F0E68C;
+    color: #FFFFFF;
   }
 
   .userIcon{
