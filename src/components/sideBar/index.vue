@@ -124,11 +124,11 @@
               <span class="levelOne">多元评估</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="1-1" >
+              <el-menu-item index="1-1">
                 <i class="el-icon-check userIcon"></i>
                 <span class="levelTwo">指标选择</span>
               </el-menu-item>
-              <el-menu-item index="1-2" >
+              <el-menu-item index="1-2">
                 <i class="el-icon-star-off userIcon"></i>
                 <span class="levelTwo">生态评量</span>
               </el-menu-item>
@@ -149,16 +149,16 @@
                 <span class="levelTwo">学生课表</span>
               </el-menu-item>
 
-             <!-- <el-submenu index="2-2">
-                <template slot="title">
-                  <i class="el-icon-edit userIcon"></i>
-                  <span class="levelTwo">课表制定</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="2-2-1"><span class="levelThree">学生课表查询</span></el-menu-item>
-                  <el-menu-item index="2-2-2"><span class="levelThree">学生课表制定</span></el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>-->
+              <!-- <el-submenu index="2-2">
+                 <template slot="title">
+                   <i class="el-icon-edit userIcon"></i>
+                   <span class="levelTwo">课表制定</span>
+                 </template>
+                 <el-menu-item-group>
+                   <el-menu-item index="2-2-1"><span class="levelThree">学生课表查询</span></el-menu-item>
+                   <el-menu-item index="2-2-2"><span class="levelThree">学生课表制定</span></el-menu-item>
+                 </el-menu-item-group>
+               </el-submenu>-->
               <el-menu-item index="2-3">
                 <i class="el-icon-chat-line-round userIcon"></i>
                 <span class="levelTwo">IEP会议</span>
@@ -237,118 +237,133 @@
 
 <script>/* eslint-disable */
 export default {
-  name:"home",
+  name: 'home',
+
   data () {
     return {
-      currentPage : '1-1',
-      openMethod : true
+      currentPage: '',
+      openMethod: true
     }
   },
   methods: {
+    //获取参数
+    getSideBarActive () {
+      let urlParams = location.href.split("=")[1]// 0 是前面的地址  1 为第一个参数 2 为第二个参数
+      this.currentPage = urlParams
+      console.log(urlParams)
+    },
+
     handleOpen (key, keyPath) {
+      this.getSideBarActive()
       console.log(key, keyPath)
     },
+
     handleClose (key, keyPath) {
       console.log(key, keyPath)
     },
-    handleSelect(key){
-      switch(key){
+
+
+
+    handleSelect (key) {
+      switch (key) {
         case '1-1':
-          this.title='指标选择';
-          this.currentPage = key
-          window.location.href='http://localhost:8083/#/data';
+          this.title = '指标选择'
+          window.location.href = 'http://localhost:8083/#/data?id=' + key
           //window.location.href='http://47.110.134.247/group2/#/data';
-          break;
+          break
         case '1-2':
-          this.title='生态评量';
-          window.location.href='http://47.110.134.247/group3/#/newcontact';
+          this.title = '生态评量'
+          window.location.href = 'http://47.110.134.247/group3/#/newcontact?id=' + key
           //this.$router.push('/newcontact');
-          break;
+          break
         case '2-1':
-          this.title='课程设置';
-          this.currentPage = key;
-          window.location.href='http://47.110.134.247/group1/#/CourseManagement';
-          break;
+          this.title = '课程设置'
+          window.location.href = 'http://47.110.134.247/group1/#/CourseManagement?id=' + key
+          break
         case '2-2':
-          this.title='学生课表查询';
-          this.currentPage = key
-          window.location.href='http://localhost:8083/#/school_tables';
-          //window.location.href='http://47.110.134.247/group2/#/school_tables';
-          break;
+          this.title = '学生课表查询'
+          window.location.href = 'http://localhost:8083/#/school_tables?id=' + key
+          //window.location.href='http://47.110.134.247/group2_b/#/school_tablesid=' + key
+          break
         /*case '2-2-2':
           this.title='学生课表制定';
           window.location.href='http://localhost:8083/#/creat_school_tables';
-          //window.location.href='http://47.110.134.247/group2/#/creat_school_tables';
+          //window.location.href='http://47.110.134.247/group2_b/#/creat_school_tables';
           break;*/
         case '2-3':
-          this.title='IEP会议';
-          window.location.href='http://47.110.134.247/group3/#/iep_meeting';
+          this.title = 'IEP会议'
+          window.location.href = 'http://47.110.134.247/group3/#/iep_meeting?id=' + key
           //this.$router.push('/iep_meeting');
-          break;
+          break
         case '3-1':
-          this.title='课程评量';
-          window.location.href='http://47.110.134.247/group3/#/course_evaluation';
+          this.title = '课程评量'
+          window.location.href = 'http://47.110.134.247/group3/#/course_evaluation?id=' + key
           //this.$router.push('/course_evaluation');
-          break;
+          break
         case '3-2-1':
-          this.title='集体学科计划';
-          window.location.href='http://47.110.134.247/group3/#/coll_disc_pro';
+          this.title = '集体学科计划'
+          window.location.href = 'http://47.110.134.247/group3/#/coll_disc_pro?id=' + key
           //this.$router.push('/coll_disc_pro');
-          break;
+          break
         case '3-2-2':
-          this.title='个训学科计划';
-          window.location.href='http://47.110.134.247/group3/#/train_sub_prp';
+          this.title = '个训学科计划'
+          window.location.href = 'http://47.110.134.247/group3/#/train_sub_prp?id=' + key
           //this.$router.push('/train_sub_prp');
-          break;
+          break
         case '3-3':
-          this.title='教学主题';
-          window.location.href='http://47.110.134.247/group3/#/tea_theme';
+          this.title = '教学主题'
+          window.location.href = 'http://47.110.134.247/group3/#/tea_theme?id=' + key
           //this.$router.push('/tea_theme');
-          break;
+          break
         case '3-4':
-          this.title='集体学科教学';
-          window.location.href='http://47.110.134.247/group3/#/coll_sub_tea';
+          this.title = '集体学科教学'
+          window.location.href = 'http://47.110.134.247/group3/#/coll_sub_tea?id=' + key
           ///this.$router.push('/coll_sub_tea');
-          break;
+          break
         case '3-5':
-          this.title='个训学科教学';
-          window.location.href='http://47.110.134.247/group3/#/ind_train_sub';
+          this.title = '个训学科教学'
+          window.location.href = 'http://47.110.134.247/group3/#/ind_train_sub?id=' + key
           //this.$router.push('/ind_train_sub');
-          break;
+          break
         case '4-1':
-          this.title='学校管理';
-          window.location.href='http://47.110.134.247/group1/#/list8';
-          break;
+          this.title = '学校管理'
+          window.location.href = 'http://47.110.134.247/group1/#/list8?id=' + key
+          break
         case '4-2':
-          this.title='用户管理';
-          window.location.href='http://47.110.134.247/group1/#/UserManagement';
-          break;
+          this.title = '用户管理'
+          window.location.href = 'http://47.110.134.247/group1/#/UserManagement?id=' + key
+          break
         case '4-3':
-          this.title='指标管理';
-          window.location.href='http://47.110.134.247/group1/#/IndicatorManagement';
-          break;
+          this.title = '指标管理'
+          window.location.href = 'http://47.110.134.247/group1/#/IndicatorManagement?id=' + key
+          break
       }
     },
+  },
+
+
+  mounted:function(){
+    this.getSideBarActive(); //加载时执行函数方法
   }
 }
 </script>
 
 <style scoped>
-  .header div{
+  .header div {
 
     background: #f1f2f7;
     height: 80px;
     line-height: 80px;
   }
 
-  .header .titles{
+  .header .titles {
 
     font-size: 20px;
-    font-weight:500;
+    font-weight: 500;
     margin-left: 19px;
   }
 
-  .header .logo  img{
+  .header .logo img {
 
     width: 209px;
     height: 40px;
@@ -356,65 +371,71 @@ export default {
     margin-left: 20px;
   }
 
-  .header .ipt{
+  .header .ipt {
     margin-left: 500px;
     position: relative;
     width: 343px;
   }
-  .header .userinfo{
+
+  .header .userinfo {
     margin-left: 160px;
   }
+
   .ipt .search {
     position: absolute;
     top: 4px;
     right: 4px;
   }
-  .ipt .search img{
+
+  .ipt .search img {
     width: 18px;
     height: 18px;
   }
 
-  .levelOne{
-    color: 	#FFFFFF;
-  }
-
-  .levelTwo{
-    /*color: #FFD04B #F0E68C  #FFD700      #AFEEEE*/
-    color:  #FFFFFF;
-  }
-
-  .levelThree{
+  .levelOne {
     color: #FFFFFF;
   }
 
-  .userIcon{
+  .levelTwo {
+    /*color: #FFD04B #F0E68C  #FFD700      #AFEEEE*/
+    color: #FFFFFF;
+  }
+
+  .levelThree {
+    color: #FFFFFF;
+  }
+
+  .userIcon {
     margin-left: 20px;
   }
 
 
-  .con_section{
+  .con_section {
     position: absolute;
-    top:0px;
-    bottom:0px;
-    left:0px;
-    width:100%;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
   }
-  .header_style{
-    height:60px;
+
+  .header_style {
+    height: 60px;
     line-height: 60px;
     background-color: #f1f2f7;
   }
-  .title_style{
+
+  .title_style {
     font-size: 20px;
-    float:left;
-    height:60px;
+    float: left;
+    height: 60px;
     margin: 0 20px;
     width: 300px;
   }
 
-  .home_main{
-    padding:10px;
+  .home_main {
+    padding: 10px;
   }
+
   .el-main {
     background-color: #E9EEF3;
     color: #333;

@@ -160,12 +160,12 @@ export default {
       },
       formLabelWidth: '120px',
       //随机颜色课表
-      colorMap:['#FFB6C1', '#6495ED', '#FFA500', '#FF7F50',],
+      colorMap: ['#FFB6C1', '#6495ED', '#FFA500', '#FF7F50',],
 
-      colorMap2:['#C7EDE9','#AFD7ED','#5CA7BA','#FF425D','#93E0FF'],
+      colorMap2: ['#C7EDE9', '#AFD7ED', '#5CA7BA', '#FF425D', '#93E0FF'],
 
-      colorMap3:['#F4E8C1','#A0C1B8','#B7DAE0','#E6E6FA',
-        '#FFD8EB','#87CEFA','#FFE4E1'],
+      colorMap3: ['#F4E8C1', '#A0C1B8', '#B7DAE0', '#E6E6FA',
+        '#FFD8EB', '#87CEFA', '#FFE4E1'],
     }
 
   },
@@ -186,8 +186,13 @@ export default {
           'studentId': this.$route.query.row.studentId
         }
       }).then((res) => {
+        if (res.data.data === null) {
+          alert('该学生暂无' + '2018/2019学年 第 1 学期 ' + '课表！请查看其他学期课表！')
+          return
+        }
         //console.log(res.data.data)
         let temp = JSON.parse(res.data.data.courses)
+
         this.heads[0].type = 'success'
         this.heads[0].label = res.data.data.year + '学年'
         this.heads[1].type = ''
@@ -231,6 +236,10 @@ export default {
           'studentId': this.$route.query.row.studentId
         }
       }).then((res) => {
+        if (res.data.data === null) {
+          alert('该学生暂无' + this.form.year + '学年 第 ' + this.form.semester + ' 学期 ' + '课表！请查看其他学期课表！')
+          return
+        }
         this.coursesNames = []
         //console.log(res.data.data)
         let temp = JSON.parse(res.data.data.courses)
@@ -256,20 +265,19 @@ export default {
         //console.log(this.coursesNames)
       })
     },
-    randomRgb(id){
-      if(id<100){
+    randomRgb (id) {
+      if (id < 100) {
         //左右相邻不同色
         this.coursesNames[id].color = -1
-        this.coursesNames[id].color = Math.floor((Math.random()*7)+1) - 1;
-        while(this.coursesNames[id].color===this.coursesNames[id-1].color){
-          this.coursesNames[id].color = ((this.coursesNames[id].color)%7) + 1
+        this.coursesNames[id].color = Math.floor((Math.random() * 7) + 1) - 1
+        while (this.coursesNames[id].color === this.coursesNames[id - 1].color) {
+          this.coursesNames[id].color = ((this.coursesNames[id].color) % 7) + 1
         }
         //console.log(this.coursesNames[id].color)
         return {
           background: this.colorMap3[this.coursesNames[id].color]
         }
-      }
-      else{
+      } else {
         return {
           background: '#d3dce6'
         }

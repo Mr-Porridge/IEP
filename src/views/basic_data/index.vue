@@ -32,8 +32,10 @@
                   :render-content="renderContent">
                 </el-tree>
                 <div class="add">
-                  <el-button type="text" @click.prevent class="textButton">先在下方输入，再在上方需要的地方点击添加</el-button>
                   <el-form v-model="newChild">
+                    <el-form-item>
+                      <el-button type="text" @click.prevent class="textButton">先在下方输入，再在上方需要的地方点击添加</el-button>
+                    </el-form-item>
                     <el-form-item label="指标关联" :label-width="formLabelWidth" style="margin-left: 0">
                       <el-cascader
                         size="medium"
@@ -50,6 +52,12 @@
                     <!--<el-form-item label="指标选项"  :label-width="formLabelWidth">
                       <el-input v-model="newChild.options" placeholder="请用分号间隔"></el-input>
                     </el-form-item>-->
+                    <el-form-item>
+                      <el-button type="primary" @click="editSchoolData" class="textButton" v-if="schoolExisted===true">修改</el-button>
+                      <el-button type="primary" @click="createSchoolData" class="textButton" v-if="schoolExisted===false">新建</el-button>
+                      <el-button type="danger" @click.prevent class="textButton" v-if="schoolExisted===null">请联系管理员！</el-button>
+                      <el-button @click="resetChecked">清空所选项</el-button>
+                    </el-form-item>
                   </el-form>
                 </div>
                 <el-main>
@@ -58,10 +66,6 @@
                   <!--<el-button @click="getCheckedKeys">输出所有选中的Key</el-button>-->
                   <!--<el-button @click="packageOne">套餐一</el-button>&lt;!&ndash;通过 node 设置&ndash;&gt;
                   <el-button @click="packageTwo">套餐二</el-button>&lt;!&ndash;通过 key 设置&ndash;&gt;-->
-                  <el-button type="primary" @click="editSchoolData" class="textButton" v-if="schoolExisted===true">修改</el-button>
-                  <el-button type="primary" @click="createSchoolData" class="textButton" v-if="schoolExisted===false">新建</el-button>
-                  <el-button type="danger" @click.prevent class="textButton" v-if="schoolExisted===null">请联系管理员！</el-button>
-                  <el-button @click="resetChecked">清空所选项</el-button>
                   <!-- <el-button @click="showList">输出List1&2</el-button>-->
                 </el-main>
                 <el-main>
@@ -111,6 +115,7 @@ export default {
         targetOrigin:-1
       },
       formLabelWidth: '120px',
+      labelPosition:'left',
       data: [],
 
       //学校是否已经有一张表
@@ -193,6 +198,7 @@ export default {
      * 从数据库中获取数据
      * */
     getSchoolData() {
+      console.log()
       const nodes=[];
       //const url = 'http://47.110.134.247/group2_b/schoolStandardDataForm/toSuperDataFormPage'
       const url= 'http://er58rm.natappfree.cc/schoolStandardDataForm/getData'

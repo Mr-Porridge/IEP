@@ -3,9 +3,9 @@
   <div>
     <el-container style="position: absolute;top:0;bottom:0;left:0;width:100%;" direction="vertical">
       <el-header style=" height: 82px;   background: #f1f2f7;">
-       <!-- <head-bar-router></head-bar-router>-->
+        <!-- <head-bar-router></head-bar-router>-->
       </el-header>
-      <el-container >
+      <el-container>
         <el-aside style="width: 211px">
           <side-bar-router></side-bar-router>
         </el-aside>
@@ -23,19 +23,27 @@
                         clearable>
                       </el-input>
                     </el-form-item>
-
-                    <el-button type="primary" icon="el-icon-search" @click="searchByName()">查询</el-button>
-
-                    <el-form-item label="按学号查询">
-                      <el-input
-                        placeholder="请输入学生学号"
-                        v-model="SId"
-                        clearable>
-                      </el-input>
+                    <el-form-item>
+                      <el-button type="primary" icon="el-icon-search" @click="searchByName()">查询</el-button>
                     </el-form-item>
+                    <el-form-item>
+                      <el-form :inline="true">
+                        <el-form-item label="按学号查询">
+                          <el-input
+                            placeholder="请输入学生学号"
+                            v-model="SId"
+                            clearable>
+                          </el-input>
+                        </el-form-item>
+                        <el-form-item>
+                          <el-button type="primary" icon="el-icon-search" @click="searchById()">查询</el-button>
+                        </el-form-item>
+                      </el-form>
+                    </el-form-item>
+                  </el-form>
 
-                    <el-button type="primary" icon="el-icon-search" @click="searchById()">查询</el-button>
 
+                  <el-form :inline="true">
                     <el-form-item label="按班级查询">
                       <el-select v-model="classes" placeholder="班级名称">
                         <el-option
@@ -112,7 +120,7 @@
               </div>
             </el-main>
           </el-container>
-          <el-button type="primary" @click="mySession()">测试</el-button>
+          <!--<el-button type="primary" @click="mySession()">测试</el-button>-->
         </el-main>
       </el-container>
     </el-container>
@@ -320,18 +328,17 @@ export default {
       console.log(index, row)
     },
 
-    mySession(){
+    mySession () {
       var sessionTest = {}
-      sessionTest.id = "Session里的id";
-      sessionTest.name = "Session里的name";
-      window.sessionStorage["searchIndex"] = JSON.stringify(sessionTest);
+      sessionTest.id = 'Session里的id'
+      sessionTest.name = 'Session里的name'
+      window.sessionStorage['searchIndex'] = JSON.stringify(sessionTest)
 
       this.$router.push({
         path: '/test_dir',
         name: 'test_dir',
       })
     }
-
 
   }
 }
