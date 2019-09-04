@@ -2,7 +2,7 @@
   <div>
     <el-container style="position: absolute;top:0;bottom:0;left:0;width:100%;" direction="vertical">
       <el-header style=" height: 82px;   background: #f1f2f7;">
-        <!-- <head-bar-router></head-bar-router>-->
+         <head-bar-router></head-bar-router>
       </el-header>
     <el-container>
       <el-aside width="211px">
@@ -81,6 +81,7 @@
 </template>
 <script>/* eslint-disable */
 import sideBarRouter from '@/components/sideBar/index'
+import headBarRouter from '@/components/head/index'
 import ElSelectDropdown from 'element-ui/packages/select/src/select-dropdown'
 import axios from 'axios/index'
 import qs from 'qs'
@@ -130,7 +131,7 @@ export default {
     }
 
   },
-  components: {ElSelectDropdown, sideBarRouter},
+  components: {ElSelectDropdown, sideBarRouter, headBarRouter},
   methods: {
 
     /*迭代查找children对应的结点*/
@@ -200,9 +201,9 @@ export default {
     getSchoolData() {
       console.log()
       const nodes=[];
-      //const url = 'http://47.110.134.247/group2_b/schoolStandardDataForm/toSuperDataFormPage'
-      const url= 'http://er58rm.natappfree.cc/schoolStandardDataForm/getData'
-      axios.post(url,qs.stringify({schoolId:1}))
+      const url = 'http://47.110.134.247/group2_b/schoolStandardDataForm/getData'
+      //const url= 'http://er58rm.natappfree.cc/schoolStandardDataForm/getData'
+      axios.post(url,qs.stringify())
       /*axios({
         method: 'post',
         url: 'http://er58rm.natappfree.cc/schoolStandardDataForm/getData',
@@ -300,8 +301,8 @@ export default {
       }
       axios({
         method: 'post',
-        //url: 'http://47.103.77.143:8082/schoolStandardDataForm/createSchoolDataForm',
-        url: 'http://er58rm.natappfree.cc/schoolStandardDataForm//updateSchoolDataForm',
+        url: 'http://47.103.77.143/group2_b/schoolStandardDataForm/updateSchoolDataForm',
+        //url: 'http://er58rm.natappfree.cc/schoolStandardDataForm//updateSchoolDataForm',
         contentType: "application/json;charset=UTF-8",
         data: d
       }).then((response) => {
@@ -328,8 +329,8 @@ export default {
       }
       axios({
         method: 'post',
-        //url: 'http://47.103.77.143:8082/schoolStandardDataForm/createSchoolDataForm',
-        url: 'http://er58rm.natappfree.cc/schoolStandardDataForm/createSchoolDataForm',
+        url: 'http://47.103.77.143/group2_b/schoolStandardDataForm/createSchoolDataForm',
+        //url: 'http://er58rm.natappfree.cc/schoolStandardDataForm/createSchoolDataForm',
         data: {
           "schoolId":1,
           "schoolData":combined,
@@ -480,12 +481,11 @@ export default {
 }
 </script>
 <style>
-  /*
-  去掉整个页面的边框
+  /*去掉整个页面的边框*/
   *{
     padding: 0;
     margin: 0;
-  }*/
+  }
   .custom-tree-node {
     flex: 1;
     display: flex;
@@ -506,7 +506,7 @@ export default {
   .el-main {
     background-color: #E9EEF3;
     color: #333;
-     padding: 0;
+    padding: 0;
   }
   .body {
     padding: 0;

@@ -3,7 +3,7 @@
   <div>
     <el-container style="position: absolute;top:0;bottom:0;left:0;width:100%;" direction="vertical">
       <el-header style=" height: 82px;   background: #f1f2f7;">
-        <!-- <head-bar-router></head-bar-router>-->
+         <head-bar-router></head-bar-router>
       </el-header>
       <el-container>
         <el-aside style="width: 211px">
@@ -149,30 +149,25 @@ export default {
       classes: '',
       totalCount: 0,
       allClasses: [
-        {
-          value: '仁（1）',
-          label: '仁（1）'
-        },
-        {
-          value: '仁（2）',
-          label: '仁（2）'
-        },
-        {
-          value: '仁（3）',
-          label: '仁（3）'
-        },
-        {
-          value: '智（1）',
-          label: '智（1）'
-        },
-        {
-          value: '智（2）',
-          label: '智（2）'
-        },
-        {
-          value: '礼（1）',
-          label: '礼（1）'
-        },
+        {value: '仁（1）班', label: '仁（1）班'},
+        {value: '仁（2）班', label: '仁（2）班'},
+        {value: '义（1）班', label: '义（1）班'},
+        {value: '义（2）班', label: '义（2）班'},
+        {value: '义（3）班', label: '义（3）班'},
+        {value: '义（4）班', label: '义（4）班'},
+        {value: '礼（1）班', label: '礼（1）班'},
+        {value: '礼（2）班', label: '礼（2）班'},
+        {value: '礼（3）班', label: '礼（3）班'},
+        {value: '礼（4）班', label: '礼（4）班'},
+        {value: '智（1）班', label: '智（1）班'},
+        {value: '智（2）班', label: '智（2）班'},
+        {value: '智（3）班', label: '智（3）班'},
+        {value: '智（4）班', label: '智（4）班'},
+        {value: '信（1）班', label: '信（1）班'},
+        {value: '信（2）班', label: '信（2）班'},
+        {value: '暖星班（送教）', label: '暖星班（送教）'},
+        {value: '入学评估', label: '入学评估'},
+        {value: '毕业班级1', label: '毕业班级1'},
       ],
       presentStudents: []
     }

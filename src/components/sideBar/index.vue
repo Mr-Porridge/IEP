@@ -268,8 +268,8 @@ export default {
       switch (key) {
         case '1-1':
           this.title = '指标选择'
-          window.location.href = 'http://localhost:8083/#/data?id=' + key
-          //window.location.href='http://47.110.134.247/group2/#/data';
+          //window.location.href = 'http://localhost:8083/#/data?id=' + key
+          window.location.href='http://47.110.134.247/group2/#/data?id=' + key
           break
         case '1-2':
           this.title = '生态评量'
@@ -283,7 +283,7 @@ export default {
         case '2-2':
           this.title = '学生课表查询'
           window.location.href = 'http://localhost:8083/#/school_tables?id=' + key
-          //window.location.href='http://47.110.134.247/group2_b/#/school_tablesid=' + key
+          //window.location.href='http://47.110.134.247/group2/#/school_tables?id=' + key
           break
         /*case '2-2-2':
           this.title='学生课表制定';

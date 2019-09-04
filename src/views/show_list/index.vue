@@ -260,6 +260,10 @@ export default {
     },
 
     chooseLesson (buttonId) {
+      if(buttonId>=100){
+        alert("禁止修改侧边栏！")
+        return
+      }
       console.log('选课')
       console.log('选课时的id：', buttonId)
       this.choosing = buttonId

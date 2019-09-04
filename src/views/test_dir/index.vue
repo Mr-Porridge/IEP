@@ -6,7 +6,9 @@
         <side-bar-router></side-bar-router>
       </el-aside>
       <el-main>
-        <el-button type="primary" @click="checkExisted()">测试</el-button>
+        <!--<el-button type="primary" @click="checkExisted()">测试</el-button>-->
+        <span>标题</span><el-input>标题</el-input>
+        <span>文章</span><el-input>文章</el-input>
       </el-main>
     </el-container>
   </div>

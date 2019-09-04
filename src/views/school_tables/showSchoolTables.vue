@@ -2,9 +2,9 @@
 <template>
   <div>
     <el-container style="position: absolute;top:0;bottom:0;left:0;width:100%;" direction="vertical">
-      <el-header style=" height: 82px;   background: #f1f2f7;">
+      <!--<el-header style=" height: 82px;   background: #f1f2f7;">
         <head-bar-router></head-bar-router>
-      </el-header>
+      </el-header>-->
       <el-container style="margin-outside: 0">
         <el-aside width="211px">
           <side-bar-router></side-bar-router>
@@ -12,16 +12,20 @@
         <el-main class="el-main">
           <!--<el-button type="primary" @click="mockTest">测试</el-button>-->
           <el-main>
-            <el-tag
-              v-for="item in heads"
-              :key="item.key"
-              :type="item.type"
-              effect="dark">
-              {{ item.label }}
-            </el-tag>
+            <div style="padding-top: 10px">
+              <el-tag
+                v-for="item in heads"
+                :key="item.key"
+                :type="item.type"
+                effect="dark">
+                {{ item.label }}
+              </el-tag>
+              <el-button type="text" @click="dialogFormVisible = true">查看其它学年学期课表</el-button>
+            </div>
+
 
             <!--选择学年学期-->
-            <el-button type="text" @click="dialogFormVisible = true">查看其它学年学期课表</el-button>
+
 
             <el-dialog title="选择查询的学年学期" :visible.sync="dialogFormVisible">
               <el-form :model="form">
@@ -52,36 +56,36 @@
               </div>
             </el-dialog>
 
-            <div id="creatSchoolTable">
+            <div id="creatSchoolTable" style="padding-top: 15px">
               <el-row>
                 <el-col :span="3">
-                  <div class="grid-content bg-purple-light">节次\星期</div>
+                  <div class="grid-content bg-purple-light school-tables" >节次\星期</div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="grid-content bg-purple">一</div>
+                  <div class="grid-content bg-purple school-tables">一</div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="grid-content bg-purple">二</div>
+                  <div class="grid-content bg-purple school-tables">二</div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="grid-content bg-purple">三</div>
+                  <div class="grid-content bg-purple school-tables">三</div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="grid-content bg-purple">四</div>
+                  <div class="grid-content bg-purple school-tables">四</div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="grid-content bg-purple">五</div>
+                  <div class="grid-content bg-purple school-tables">五</div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="grid-content bg-purple">六</div>
+                  <div class="grid-content bg-purple school-tables">六</div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="grid-content bg-purple">日</div>
+                  <div class="grid-content bg-purple school-tables">日</div>
                 </el-col>
               </el-row>
               <el-row :span="3">
                 <el-col :span="3" v-for="item in coursesNames" :key="item.id">
-                  <div class="grid-content bg-purple-light" :style="randomRgb(item.id)">
+                  <div class="grid-content bg-purple-light school-tables" :style="randomRgb(item.id)">
                     <span class="courseName">{{item.mes}}</span>
                   </div>
                 </el-col>
@@ -275,11 +279,13 @@ export default {
         }
         //console.log(this.coursesNames[id].color)
         return {
-          background: this.colorMap3[this.coursesNames[id].color]
+          background: this.colorMap3[this.coursesNames[id].color],
+          color: '#696969',
         }
       } else {
         return {
-          background: '#d3dce6'
+          background: '#d3dce6',
+          color:'#000000',
         }
       }
     },
@@ -337,7 +343,14 @@ export default {
   }
 
   .courseName {
+    /*border: #333333 solid 2px;*/
+  }
 
+  .school-tables{
+
+    margin: 1px;
+    text-align:center;
+    padding-top: 11px;
   }
 
 
