@@ -282,8 +282,8 @@ export default {
           break
         case '2-2':
           this.title = '学生课表查询'
-          window.location.href = 'http://localhost:8083/#/school_tables?id=' + key
-          //window.location.href='http://47.110.134.247/group2/#/school_tables?id=' + key
+          //window.location.href = 'http://localhost:8083/#/school_tables?id=' + key
+          window.location.href='http://47.110.134.247/group2/#/school_tables?id=' + key
           break
         /*case '2-2-2':
           this.title='学生课表制定';

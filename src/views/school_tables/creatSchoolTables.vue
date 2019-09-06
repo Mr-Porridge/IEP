@@ -212,9 +212,9 @@ export default {
       //测试用http://localhost:8082/scheduleSet/courses/
       axios({
         method: 'get',
-        //url: 'http://47.110.134.247/group2_b/scheduleSet/courses/',
+        url: 'http://47.110.134.247/group2_b/scheduleSet/courses/',
         //测试用http://localhost:8082/scheduleSet/courses/
-        url:'http://localhost:8082/scheduleSet/courses/',
+        //url:'http://localhost:8082/scheduleSet/courses/',
         params: {
           'pageNumber': '0',
           'pageSize': '10',

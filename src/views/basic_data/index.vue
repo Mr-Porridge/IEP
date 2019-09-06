@@ -203,7 +203,7 @@ export default {
       const nodes=[];
       const url = 'http://47.110.134.247/group2_b/schoolStandardDataForm/getData'
       //const url= 'http://er58rm.natappfree.cc/schoolStandardDataForm/getData'
-      axios.post(url,qs.stringify())
+      axios.post(url,qs.stringify({schoolId:1}))
       /*axios({
         method: 'post',
         url: 'http://er58rm.natappfree.cc/schoolStandardDataForm/getData',
