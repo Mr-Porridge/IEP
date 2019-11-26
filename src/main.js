@@ -9,15 +9,15 @@ import axios from 'axios'
 import qs from 'qs'
 import Mock from './mock'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-Vue.use(ElementUI)
+Vue.use(ElementUI);
 
 //require('./mock')
 //放服务器须注释上一行！！
 //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-axios.defaults.withCredentials = true
-Vue.prototype.axios = axios
+axios.defaults.withCredentials = true;
+Vue.prototype.axios = axios;
 
 
 

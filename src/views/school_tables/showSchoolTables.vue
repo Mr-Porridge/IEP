@@ -272,8 +272,8 @@ export default {
     randomRgb (id) {
       if (id < 100) {
         //左右相邻不同色
-        this.coursesNames[id].color = -1
-        this.coursesNames[id].color = Math.floor((Math.random() * 7) + 1) - 1
+        this.coursesNames[id].color = -1;
+        this.coursesNames[id].color = Math.floor((Math.random() * 7) + 1) - 1;
         while (this.coursesNames[id].color === this.coursesNames[id - 1].color) {
           this.coursesNames[id].color = ((this.coursesNames[id].color) % 7) + 1
         }

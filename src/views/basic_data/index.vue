@@ -76,6 +76,7 @@
         </el-container>
       </el-main>
     </el-container>
+
     </el-container>
   </div>
 </template>
@@ -301,7 +302,7 @@ export default {
       }
       axios({
         method: 'post',
-        url: 'http://47.103.77.143/group2_b/schoolStandardDataForm/updateSchoolDataForm',
+        url: 'http://47.110.134.247/group2_b/schoolStandardDataForm/updateSchoolDataForm',
         //url: 'http://er58rm.natappfree.cc/schoolStandardDataForm//updateSchoolDataForm',
         contentType: "application/json;charset=UTF-8",
         data: d
@@ -329,7 +330,7 @@ export default {
       }
       axios({
         method: 'post',
-        url: 'http://47.103.77.143/group2_b/schoolStandardDataForm/createSchoolDataForm',
+        url: 'http://47.110.134.247/group2_b/schoolStandardDataForm/createSchoolDataForm',
         //url: 'http://er58rm.natappfree.cc/schoolStandardDataForm/createSchoolDataForm',
         data: {
           "schoolId":1,

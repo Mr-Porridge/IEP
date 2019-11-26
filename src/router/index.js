@@ -8,7 +8,7 @@ import creatSchoolTablesRouter from './school_tables/creatSchoolTables'
 import toBeDevelopedRouter from './to_be_developed'
 import testDirRouter from './test_dir'
 
-Vue.use(Router)
+Vue.use(Router);
 
 /* eslint-disable */
 export default new Router({
